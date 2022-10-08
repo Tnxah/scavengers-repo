@@ -10,6 +10,9 @@ public class AccountManager
     public static AccountCallback onSignUpCallback;
     public static AccountCallback onSignInCallback;
 
+    public static bool isLoggedIn;
+
+    public static string playerId;
     public static void Register(string username, string email, string password)
     {
         var request = new RegisterPlayFabUserRequest();
@@ -32,20 +35,27 @@ public class AccountManager
     {
         var request = new SendAccountRecoveryEmailRequest();
         request.Email = email;
-        request.TitleId = "67F9D";
+        request.TitleId = TitleInfo.TitleId;
 
         PlayFabClientAPI.SendAccountRecoveryEmail(request, OnResetPasswordSuccess, OnResetPasswordError);
     }
 
     private static void OnSignInSuccess(LoginResult result)
     {
-        PlayfabStatisticsManager.LoadStatistics();
+        isLoggedIn = true;
+
+        Debug.Log("Successful login");
+
+        playerId = result.PlayFabId;
 
         onSignInCallback?.Invoke();
+
+        PlayfabStatisticsManager.LoadStatistics();
     }
     private static void OnSignInError(PlayFabError error)
     {
 
+        Debug.Log("Unsuccessful login: " + error.ErrorMessage);
     }
     private static void OnSignUpSuccess(RegisterPlayFabUserResult result)
     {

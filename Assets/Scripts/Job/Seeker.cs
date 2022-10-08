@@ -7,7 +7,7 @@ public class Seeker : Job
 {
     private float[] spawnChanceMultiplyer = {1f, 1.1f, 1.2f, 1.3f};
 
-    private int[] levelUps = {0, 100, 500, 600, 1200};
+    private int[] itemsToLevelUp = {0, 100, 500, 600, 1200};
 
     private int itemsCollected;
 
@@ -23,7 +23,7 @@ public class Seeker : Job
 
     public override void ApplyJobProperties()
     {
-        //SpawnController.instance.spawnChance = 50 * spawnChanceMultiplyer[level];
+        //SpawnController.instance.spawnChance = PlayerStatistics.spawnChance * spawnChanceMultiplyer[level];
         Debug.Log(level);
     }
 
@@ -59,7 +59,7 @@ public class Seeker : Job
 
         PlayfabStatisticsManager.SaveStat(StatisticsKeys.itemsCollectedKey, itemsCollected);
 
-        if (level < levelUps.Length && itemsCollected >= levelUps[level + 1])
+        if (level < itemsToLevelUp.Length && itemsCollected >= itemsToLevelUp[level + 1])
         {
             LevelUp();  
         }

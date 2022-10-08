@@ -32,35 +32,32 @@ public class PlayfabStatisticsManager
 
     public static int GetStat(string statisticKey)
     {
-        //if (!loaded)
+        if (!loaded)
             LoadStatistics();
 
         var statistic = statistics.Find(stat => stat.StatisticName == statisticKey);
 
         if (statistic == null)
         {
-
             SaveStat(statisticKey, 0);
             return 0;
         }
-        Debug.Log(statisticKey);
         return statistic.Value;
-    }
-
-    public static IEnumerator GetStat()
-    {
-        yield return new WaitUntil( () => true);
     }
 
     public static void SaveStat(string statisticKey, int value = 0)
     {
+
         PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
         {
             Statistics = new List<StatisticUpdate> {
             new StatisticUpdate { StatisticName = statisticKey, Value = value },
             }
         },
-        result => { Debug.Log("User statistics updated " + $"({statisticKey})"); },
+        result => { 
+            Debug.Log("User statistics updated " + $"({statisticKey})");
+            LoadStatistics();
+        },
         error => { Debug.LogError(error.GenerateErrorReport()); });
     }
 }
