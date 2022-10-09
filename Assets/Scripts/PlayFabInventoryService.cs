@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayFabInventoryService
 {
-    public static void GrantItem(List<string> items)
+    public static void GetItem(List<string> items)
     {
         PlayFabServerAPI.GrantItemsToUser(new GrantItemsToUserRequest
         {
@@ -14,15 +14,27 @@ public class PlayFabInventoryService
             PlayFabId = AccountManager.playerId,
             ItemIds = items
 
-        }, OnGrantSuccess, OnGrantError);
+        }, OnGetSuccess, OnGetError);
+    }
+    public static void GetItem(string item)
+    {
+        var items = new List<string> { item };
+
+        PlayFabServerAPI.GrantItemsToUser(new GrantItemsToUserRequest
+        {
+            CatalogVersion = TitleInfo.CatalogVersion,
+            PlayFabId = AccountManager.playerId,
+            ItemIds = items
+
+        }, OnGetSuccess, OnGetError);
     }
 
-    private static void OnGrantError(PlayFabError error)
+    private static void OnGetError(PlayFabError error)
     {
         Debug.Log("GrantItemError: " + error.ErrorMessage);
     }
 
-    private static void OnGrantSuccess(GrantItemsToUserResult result)
+    private static void OnGetSuccess(GrantItemsToUserResult result)
     {
         Debug.Log("GrantItemSuccess");
         //inventory update
