@@ -5,9 +5,9 @@ using UnityEngine;
 public class Floater : MonoBehaviour
 {
     // User Inputs
-    public float degreesPerSecond = 15.0f;
-    public float amplitude = 0.5f;
-    public float frequency = 0.3f;
+    private float degreesPerSecond = 15.0f;
+    private float amplitude = 0.2f;
+    private float frequency = 0.3f;
 
     // Position Storage Variables
     Vector3 posOffset = new Vector3();
