@@ -1,7 +1,7 @@
 public enum ItemType
 {
-    Stick,
-    Tissue,
-    Stone,
-    Paper
+    stick,
+    tissue,
+    stone,
+    paper
 }
