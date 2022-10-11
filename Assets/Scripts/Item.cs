@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Item : MonoBehaviour, IInteractable, IHidable
 {
     [SerializeField]
     private ItemType id;
     [SerializeField]
     private MeshRenderer model;
-    [SerializeField]
     private Floater floater;
-    private bool interactable = false; 
+    private bool interactable; 
 
 
     // Start is called before the first frame update
     private void Awake()
     {
+        floater = GetComponent<Floater>();
         Hide();
     }
 
@@ -26,7 +27,7 @@ public class Item : MonoBehaviour, IInteractable, IHidable
     }
     public void Interact()
     {
-        if (!interactable)
+        if (!interactable && !PlayerScript.player.IsCloseEnough(transform))
             return;
 
         PlayFabInventoryService.GetItem(id.ToString());
@@ -45,5 +46,6 @@ public class Item : MonoBehaviour, IInteractable, IHidable
         interactable = true;
         model.enabled = true;
         floater.enabled = true;
+        GetComponent<SphereCollider>().enabled = false;
     }
 }

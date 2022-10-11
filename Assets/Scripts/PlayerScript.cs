@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static PlayerScript player;
+
+    private void Awake()
     {
-        
+        if (!player)
+        {
+            player = this;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsCloseEnough(Transform obj)
     {
-        
+        return Vector3.Distance(transform.position, obj.position) <= PlayerStatistics.interactionRadius;
     }
 }

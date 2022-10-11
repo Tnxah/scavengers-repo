@@ -6,6 +6,7 @@ public static class StatisticsKeys
 {
     public static string playerLevelKey = "Level";
     public static string playerExperienceKey = "Experience";
+    public static string playerInteractionDistance = "InteractionDistance";
     
 
     public static string currentJobKey = "Current job";
