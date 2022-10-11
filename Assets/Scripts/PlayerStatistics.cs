@@ -19,7 +19,7 @@ public class PlayerStatistics
 
 
     //Interaction
-    public static readonly int interactionRadius = 80;
+    public static readonly int interactionRadius = 50;
 
 
     //Inventory
