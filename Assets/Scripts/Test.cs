@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+    public List<Item> shit;
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +17,15 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            PlayFabInventoryService.ConsumeItem("8B9DA07783057898", 2);
+            ItemManager.ReadPrefabs();
+            ItemManager.LoadItems();
+
+            //PlayFabInventoryService.ConsumeItem("8B9DA07783057898", 2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ItemGenerator.instance.Init();
         }
     }
 }

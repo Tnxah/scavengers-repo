@@ -2,7 +2,7 @@ public enum ItemType
 {
     none,
     stick,
-    tissue,
+    cloth,
     stone,
     paper,
     can

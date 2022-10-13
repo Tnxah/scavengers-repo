@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class PlayFabInventoryService
 {
+
+    public delegate void OnGetItem();
+    public static OnGetItem onGetItemCallback;
+
     public static void GetItem(List<string> items)
     {
         PlayFabServerAPI.GrantItemsToUser(new GrantItemsToUserRequest
@@ -36,6 +40,8 @@ public class PlayFabInventoryService
 
     private static void OnGetSuccess(GrantItemsToUserResult result)
     {
+        onGetItemCallback?.Invoke();
+
         Debug.Log("GrantItemSuccess");
         //inventory update
     }

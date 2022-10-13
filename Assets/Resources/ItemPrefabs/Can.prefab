@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4099005516173324940}
   - component: {fileID: 4099005516173324941}
   m_Layer: 0
-  m_Name: Tissue
+  m_Name: Can
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4099005516173324936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.21, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -47,8 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1101eb5ee02864884e785989f0511e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
-  model: {fileID: 0}
+  id: 5
+  modelMesh: []
+  modelPrefabs:
+  - {fileID: 7997291578341295131, guid: 7048d4e774d403f4b98723337a1d60c4, type: 3}
+  - {fileID: 8143195530807378214, guid: 4e99d3b87d5821f4a8a98429585dcf65, type: 3}
 --- !u!114 &4099005516173324943
 MonoBehaviour:
   m_ObjectHideFlags: 0

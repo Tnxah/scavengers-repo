@@ -8,7 +8,12 @@ using Random = System.Random;
 public class Item : MonoBehaviour, IInteractable, IHidable
 {
     [SerializeField]
-    private ItemType id;
+    public ItemType id;
+    [SerializeField]
+    public int cost;
+    [SerializeField]
+    public string description;
+
     [SerializeField]
     private List<MeshRenderer> modelMesh = new List<MeshRenderer>();
     [SerializeField]
@@ -43,8 +48,12 @@ public class Item : MonoBehaviour, IInteractable, IHidable
     private void RandomiseModel()
     {
         var rand = rnd.Next(modelPrefabs.Count);
-        var tempModel = modelPrefabs[rand];
-        modelMesh = Instantiate(tempModel, transform).GetComponentsInChildren<MeshRenderer>().ToList();
+        if (modelPrefabs.Count > 0)
+        {
+            var tempModel = modelPrefabs[rand];
+
+            modelMesh = Instantiate(tempModel, transform).GetComponentsInChildren<MeshRenderer>().ToList();
+        }
 
     }
 

@@ -19,6 +19,11 @@ public class Trader : Job
         //throw new System.NotImplementedException();
     }
 
+    public override void CancelJobProperties()
+    {
+        //throw new NotImplementedException();
+    }
+
     public override void LevelUp()
     {
         level++;

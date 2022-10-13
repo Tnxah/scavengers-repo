@@ -70,6 +70,8 @@ public class JobManager : MonoBehaviour
         }
         else
         {
+            currentJob.CancelJobProperties();
+
             currentJob = jobs[type];
             currentJob.ApplyJobProperties();
 

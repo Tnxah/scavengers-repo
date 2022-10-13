@@ -8,7 +8,8 @@ public class PlayerStatistics
 
 
     //Seeker job
-    public static readonly int spawnChance = 50;
+    public static readonly int baseSpawnChance = 100;
+    public static float currentSpawnChance = baseSpawnChance;
 
     // job
     // job

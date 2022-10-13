@@ -17,14 +17,25 @@ public class Seeker : Job
         level = PlayfabStatisticsManager.GetStat(StatisticsKeys.seekerLevelKey);
         unlocked = Convert.ToBoolean(PlayfabStatisticsManager.GetStat(StatisticsKeys.seekerUnlockedKey));
         itemsCollected = PlayfabStatisticsManager.GetStat(StatisticsKeys.itemsCollectedKey);
-
-        //Inventory.instance.onInventoryIncreasedCallback += OnItemCollected;
     }
 
     public override void ApplyJobProperties()
     {
-        //SpawnController.instance.spawnChance = PlayerStatistics.spawnChance * spawnChanceMultiplyer[level];
+        PlayFabInventoryService.onGetItemCallback += OnItemCollected;
+        
+        PlayerStatistics.currentSpawnChance = PlayerStatistics.baseSpawnChance * spawnChanceMultiplyer[level];
+
+        ItemGenerator.instance.Init();
         Debug.Log(level);
+    }
+
+    public override void CancelJobProperties()
+    {
+        PlayFabInventoryService.onGetItemCallback -= OnItemCollected;
+
+        PlayerStatistics.currentSpawnChance = PlayerStatistics.baseSpawnChance;
+
+        ItemGenerator.instance.Init();
     }
 
     public override void LevelUp()
