@@ -5,5 +5,6 @@ public enum ItemType
     cloth,
     stone,
     paper,
-    can
+    can,
+    money
 }

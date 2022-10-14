@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public List<Item> shit;
  
     // Start is called before the first frame update
     void Start()
@@ -17,6 +16,7 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            print("F");
             ItemManager.ReadPrefabs();
             ItemManager.LoadItems();
 
@@ -25,6 +25,7 @@ public class Test : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
+            print("R");
             ItemGenerator.instance.Init();
         }
     }

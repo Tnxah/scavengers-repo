@@ -9,34 +9,28 @@ public class Item : MonoBehaviour, IInteractable, IHidable
 {
     [SerializeField]
     public ItemType id;
-    [SerializeField]
     public int cost;
-    [SerializeField]
     public string description;
 
+    protected List<MeshRenderer> modelMesh = new List<MeshRenderer>();
     [SerializeField]
-    private List<MeshRenderer> modelMesh = new List<MeshRenderer>();
-    [SerializeField]
-    private List<GameObject> modelPrefabs;
-    private Floater floater;
-    private bool interactable;
+    protected List<GameObject> modelPrefabs;
+    protected Floater floater;
+    protected bool interactable;
 
     private Random rnd = new Random();
 
     // Start is called before the first frame update
-    private void Awake()
+    public virtual void Awake()
     {
         RandomiseModel();
         floater = GetComponent<Floater>();
+#if !UNITY_EDITOR
         Hide();
+#endif
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void Interact()
+    public virtual void Interact()
     {
         if (!interactable || !PlayerScript.player.IsCloseEnough(transform))
             return;
