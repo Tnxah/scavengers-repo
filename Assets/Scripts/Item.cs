@@ -16,7 +16,7 @@ public class Item : MonoBehaviour, IInteractable, IHidable
     [SerializeField]
     protected List<GameObject> modelPrefabs;
     protected Floater floater;
-    protected bool interactable;
+    protected bool interactable = true;
 
     private Random rnd = new Random();
 
