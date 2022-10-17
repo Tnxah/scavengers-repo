@@ -12,13 +12,14 @@ public class ItemManager
     public static string catalogVersion;
     public static string currency;
 
+    private static bool ready;
 
-    public static void ReadPrefabs()
+    private static void ReadPrefabs()
     {
         itemPrefabs = Resources.LoadAll<GameObject>("ItemPrefabs").ToList();
     }
 
-    public static void LoadItems()
+    private static void LoadItems()
     {
         catalogVersion = TitleInfo.CatalogVersion;
         currency = TitleInfo.Currency;
@@ -42,6 +43,8 @@ public class ItemManager
                     prefab.description = item.Description;
                 }
 
+                ready = true;
+
             },
             error => {
                 Debug.Log(error.ErrorMessage);
@@ -56,4 +59,14 @@ public class ItemManager
         return itemprefab;
     }
 
+    public static void Prepare()
+    {
+        ReadPrefabs();
+        LoadItems();
+    }
+
+    public static bool isReady()
+    {
+        return ready;
+    }
 }

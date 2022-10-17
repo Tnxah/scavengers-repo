@@ -50,6 +50,8 @@ public class AccountManager
 
         onSignInCallback?.Invoke();
 
+        PlayFabInventoryService.GetUserInventory();
+
         PlayfabStatisticsManager.LoadStatistics();
     }
     private static void OnSignInError(PlayFabError error)

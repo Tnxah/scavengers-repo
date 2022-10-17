@@ -12,6 +12,8 @@ public class ItemGenerator : MonoBehaviour
     public float spawnChance;
     public float spawnRadius;
 
+    private bool ready;
+
     private void Awake()
     {
         if (!instance)
@@ -26,13 +28,7 @@ public class ItemGenerator : MonoBehaviour
         spawnChance = PlayerStatistics.currentSpawnChance;
         spawnRadius = PlayerStatistics.spawnRadius;
 
-        StartS();
-    }
-
-    // Start is called before the first frame update
-    public void StartS()
-    {
-        StartCoroutine(SlowUpdate());
+        ready = true;
     }
 
 
@@ -53,5 +49,16 @@ public class ItemGenerator : MonoBehaviour
 
             yield return new WaitForSeconds(spawnDelay);
         }
+    }
+
+    public void Prepare()
+    {
+        Init();
+        StartCoroutine(SlowUpdate());
+    }
+
+    public bool isReady()
+    {
+        return ready;
     }
 }
