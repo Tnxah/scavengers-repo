@@ -51,8 +51,8 @@ public class PlayFabInventoryService
     {
         onGetItemCallback?.Invoke();
 
+        GetUserInventory();
         Debug.Log("GrantItemSuccess");
-        //inventory update
     }
 
 
@@ -63,14 +63,13 @@ public class PlayFabInventoryService
         request.ConsumeCount = count;
 
         PlayFabClientAPI.ConsumeItem(request, OnConsumeItemSuccess, OnConsumeItemError);
-
-
     }
 
 
     private static void OnConsumeItemSuccess(PlayFab.ClientModels.ConsumeItemResult result)
     {
         Debug.Log("Consume Successful");
+        GetUserInventory();
     }
 
 

@@ -48,7 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 4
-  model: {fileID: 0}
+  cost: 0
+  description: 
+  modelPrefabs:
+  - {fileID: 5993433329820431561, guid: 2955ae7215f1a10458a2703950bd4665, type: 3}
 --- !u!114 &4099005516173324943
 MonoBehaviour:
   m_ObjectHideFlags: 0
