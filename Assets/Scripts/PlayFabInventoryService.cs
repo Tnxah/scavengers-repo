@@ -9,7 +9,10 @@ public class PlayFabInventoryService
     public static OnGetItem onGetItemCallback;
 
     public delegate void OnGetInventory();
-    public static OnGetItem onGetInventoryCallback;
+    public static OnGetInventory onGetInventoryCallback;
+
+    public delegate void OnConsumeItem();
+    public static OnConsumeItem onConsumeItemCallback;
 
     public static bool getInventoryReady;
 
@@ -70,6 +73,8 @@ public class PlayFabInventoryService
     {
         Debug.Log("Consume Successful");
         GetUserInventory();
+
+        onConsumeItemCallback?.Invoke();
     }
 
 

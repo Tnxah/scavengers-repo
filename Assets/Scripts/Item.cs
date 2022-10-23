@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Random = System.Random;
-
+using UnityEngine.UI;
 
 public class Item : MonoBehaviour, IInteractable, IHidable
 {
@@ -17,6 +17,8 @@ public class Item : MonoBehaviour, IInteractable, IHidable
     protected List<GameObject> modelPrefabs;
     protected Floater floater;
     protected bool interactable = true;
+
+    public Image icon;
 
     private Random rnd = new Random();
 

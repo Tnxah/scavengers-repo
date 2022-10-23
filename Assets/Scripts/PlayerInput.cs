@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    public TextMeshProUGUI text;
     private Touch touch;
     void Update()
     {

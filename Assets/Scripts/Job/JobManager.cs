@@ -32,13 +32,12 @@ public class JobManager : MonoBehaviour
         jobs.Add(JobType.Seeker, new Seeker()); //2
     }
 
-    public static void Init()
+    public static void Prepare()
     {
         FillJobs();
         LoadJob();
     }
 
-    
 
     private static void LoadJob()
     {

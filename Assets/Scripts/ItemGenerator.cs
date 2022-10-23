@@ -8,7 +8,7 @@ public class ItemGenerator : MonoBehaviour
     public static ItemGenerator instance;
 
     private Random rnd = new Random();
-    public int spawnDelay = 30;
+    public float spawnDelay = 30;
     public float spawnChance;
     public float spawnRadius;
 
@@ -24,7 +24,7 @@ public class ItemGenerator : MonoBehaviour
 
     public void Init()
     {
-        //spawnDelay = PlayerStatistics.spawnChance;
+        spawnDelay = PlayerStatistics.currentSpawnDelay;
         spawnChance = PlayerStatistics.currentSpawnChance;
         spawnRadius = PlayerStatistics.spawnRadius;
 

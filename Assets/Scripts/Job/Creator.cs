@@ -10,6 +10,8 @@ public class Creator : Job
         type = JobType.Creator;
         level = PlayfabStatisticsManager.GetStat(StatisticsKeys.creatorLevelKey);
         unlocked = Convert.ToBoolean(PlayfabStatisticsManager.GetStat(StatisticsKeys.creatorUnlockedKey));
+
+        Unlock();
     }
 
     public override void ApplyJobProperties()

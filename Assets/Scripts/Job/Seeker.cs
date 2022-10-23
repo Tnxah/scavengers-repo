@@ -6,6 +6,8 @@ using UnityEngine;
 public class Seeker : Job
 {
     private float[] spawnChanceMultiplyer = {1f, 1.1f, 1.2f, 1.3f};
+    private float[] detectionRadiusMultiplyer = {1f, 1.15f, 1.25f, 1.35f};
+    private float[] spawnDelayMultiplyer = {1f, 0.9f, 0.8f, 0.7f };
 
     private int[] itemsToLevelUp = {0, 100, 500, 600, 1200};
 
@@ -17,6 +19,8 @@ public class Seeker : Job
         level = PlayfabStatisticsManager.GetStat(StatisticsKeys.seekerLevelKey);
         unlocked = Convert.ToBoolean(PlayfabStatisticsManager.GetStat(StatisticsKeys.seekerUnlockedKey));
         itemsCollected = PlayfabStatisticsManager.GetStat(StatisticsKeys.itemsCollectedKey);
+
+        Unlock();
     }
 
     public override void ApplyJobProperties()
@@ -25,6 +29,11 @@ public class Seeker : Job
         
         PlayerStatistics.currentSpawnChance = PlayerStatistics.baseSpawnChance * spawnChanceMultiplyer[level];
 
+        PlayerStatistics.currentDetectionRadius = PlayerStatistics.baseDetectionRadius * detectionRadiusMultiplyer[level];
+
+        PlayerStatistics.currentSpawnDelay = PlayerStatistics.baseSpawnDelay * spawnDelayMultiplyer[level];
+
+        PlayerScript.player.UpdateBody();
         ItemGenerator.instance.Init();
         Debug.Log(level);
     }
@@ -35,6 +44,11 @@ public class Seeker : Job
 
         PlayerStatistics.currentSpawnChance = PlayerStatistics.baseSpawnChance;
 
+        PlayerStatistics.currentDetectionRadius = PlayerStatistics.baseDetectionRadius;
+
+        PlayerStatistics.currentSpawnDelay = PlayerStatistics.baseSpawnDelay;
+
+        PlayerScript.player.UpdateBody();
         ItemGenerator.instance.Init();
     }
 

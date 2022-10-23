@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayfabStatisticsManager
 {
-    public static List<StatisticValue> statistics = statistics = new List<StatisticValue>();
+    public static List<StatisticValue> statistics = new List<StatisticValue>();
 
     public static bool loaded = false;
 

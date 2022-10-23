@@ -11,6 +11,12 @@ public class PlayerStatistics
     public static readonly int baseSpawnChance = 100;
     public static float currentSpawnChance = baseSpawnChance;
 
+    public static readonly int baseDetectionRadius = 150;
+    public static float currentDetectionRadius = baseDetectionRadius;
+
+    public static readonly int baseSpawnDelay = 30;
+    public static float currentSpawnDelay = baseSpawnDelay;
+
     // job
     // job
 
@@ -31,13 +37,14 @@ public class PlayerStatistics
     {
         if (firstInit)
         {
-           // subscribe Init to onLevelUp delegate
+            // subscribe Init to onLevelUp delegate
+            firstInit = false;
         }
 
         if (!AccountManager.isLoggedIn)
             return;
 
-        var statistics = PlayfabStatisticsManager.statistics;
+       // var statistics = PlayfabStatisticsManager.statistics;
 
     }
 }

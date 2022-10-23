@@ -12,6 +12,8 @@ public class Trader : Job
         type = JobType.Trader;
         level = PlayfabStatisticsManager.GetStat(StatisticsKeys.traderLevelKey);
         unlocked = Convert.ToBoolean(PlayfabStatisticsManager.GetStat(StatisticsKeys.traderUnlockedKey));
+
+        Unlock();
     }
 
     public override void ApplyJobProperties()
