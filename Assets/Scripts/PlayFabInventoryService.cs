@@ -1,18 +1,16 @@
 using PlayFab;
 using PlayFab.ServerModels;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayFabInventoryService
 {
-    public delegate void OnGetItem();
-    public static OnGetItem onGetItemCallback;
+    public static event Action onGetItemCallback;
 
-    public delegate void OnGetInventory();
-    public static OnGetInventory onGetInventoryCallback;
+    public static event Action onGetInventoryCallback;
 
-    public delegate void OnConsumeItem();
-    public static OnConsumeItem onConsumeItemCallback;
+    public static event Action onConsumeItemCallback;
 
     public static bool getInventoryReady;
 

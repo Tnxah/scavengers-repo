@@ -6,13 +6,13 @@ public class CameraControl : MonoBehaviour
 {
     private Touch touch;
 
-    public float sensivity = 0.2f;
-    public float abovePlayerHeight = 8;
+    private float sensivity = 4f;
+    private float abovePlayerHeight = 8;
 
     public Transform playerBody;
 
-    public float maxCamHeight = 36;
-    public float minCamHeight = 7;
+    private float maxCamHeight = 50;
+    private float minCamHeight = 7;
 
     private bool doubleTap;
 
@@ -34,7 +34,7 @@ public class CameraControl : MonoBehaviour
             {
                 var rotationPoint = new Vector3(playerBody.position.x, transform.position.y, playerBody.position.z);
 
-                transform.RotateAround(rotationPoint, Vector3.up, touch.deltaPosition.x * Time.fixedDeltaTime);
+                transform.RotateAround(rotationPoint, Vector3.up, (touch.deltaPosition.x * sensivity * Time.fixedDeltaTime) );
             }
 
             if (doubleTap && touch.phase.Equals(TouchPhase.Moved))

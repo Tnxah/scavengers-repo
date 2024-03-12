@@ -16,7 +16,7 @@ public class Item : MonoBehaviour, IInteractable, IHidable
     [SerializeField]
     protected List<GameObject> modelPrefabs;
     protected Floater floater;
-    protected bool interactable = true;
+    protected bool interactable = false;
 
     public Image icon;
 
@@ -27,8 +27,8 @@ public class Item : MonoBehaviour, IInteractable, IHidable
     {
         RandomiseModel();
         floater = GetComponent<Floater>();
-#if !UNITY_EDITOR
-        Hide();
+#if UNITY_EDITOR
+        Unhide();
 #endif
     }
 

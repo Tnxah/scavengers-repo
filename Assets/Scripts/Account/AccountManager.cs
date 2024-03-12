@@ -1,14 +1,14 @@
 ﻿using PlayFab;
 using PlayFab.ClientModels;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AccountManager
 {
-    public delegate void AccountCallback();
-    public static AccountCallback onSignUpCallback;
-    public static AccountCallback onSignInCallback;
+    public static event Action onSignUpCallback;
+    public static event Action onSignInCallback;
 
     public static bool isLoggedIn;
 

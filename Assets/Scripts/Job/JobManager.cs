@@ -1,43 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
 
-public class JobManager : MonoBehaviour
+public class JobManager : IPrepare
 {
     private static Dictionary<JobType, Job> jobs;
 
     private static Job currentJob;
 
-    public delegate void JobsCallback();
-    public static JobsCallback onJobChanged;
-    public static JobsCallback onJobUnlock;
-
-    //public static JobManager instance;
-
-    //private void Awake()
-    //{
-    //    if (instance == null)
-    //    {
-    //        instance = this;
-    //    }
-    //}
+    public static event Action onJobChanged;
+    public static event Action onJobUnlock;
 
     private static void FillJobs()
     {
+        if (jobs != null) return;
+
         jobs = new Dictionary<JobType, Job>();
 
         jobs.Add(JobType.Trader, new Trader()); //0
         jobs.Add(JobType.Creator, new Creator()); //1
         jobs.Add(JobType.Seeker, new Seeker()); //2
     }
-
-    public static void Prepare()
-    {
-        FillJobs();
-        LoadJob();
-    }
-
 
     private static void LoadJob()
     {
@@ -79,5 +62,26 @@ public class JobManager : MonoBehaviour
             onJobChanged?.Invoke();
             return true;
         }
+    }
+
+    public IEnumerator Prepare(Action<bool, string> onComplete)
+    {
+        try
+        {
+            FillJobs();
+            LoadJob();
+
+            // If successful
+            Console.WriteLine($"Prepare JobManager result: {true} {null}");
+            onComplete?.Invoke(true, null);
+        }
+        catch (Exception ex)
+        {
+            // On error
+            Console.WriteLine($"Prepare JobManager result: {false} {ex.Message}");
+            onComplete?.Invoke(false, ex.Message);
+        }
+
+        yield break;
     }
 }

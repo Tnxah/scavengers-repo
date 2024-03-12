@@ -22,12 +22,16 @@ public class InventoryUIManager : MonoBehaviour
         {
             instance = this;
         }
+    }
+
+    private void Start()
+    {
         PlayFabInventoryService.onGetInventoryCallback += LoadInventory;
+        LoadInventory();
     }
 
     public void LoadInventory()
     {
-
         print("LoadInv");
         foreach (var item in PlayFabInventoryService.items)
         {

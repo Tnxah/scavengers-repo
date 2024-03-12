@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
-public class ItemGenerator : MonoBehaviour
+public class ItemGenerator : MonoBehaviour, IPrepare
 {
     public static ItemGenerator instance;
 
     private Random rnd = new Random();
-    public float spawnDelay = 30;
+    public float spawnDelay;
     public float spawnChance;
     public float spawnRadius;
 
@@ -51,14 +52,24 @@ public class ItemGenerator : MonoBehaviour
         }
     }
 
-    public void Prepare()
+    public IEnumerator Prepare(Action<bool, string> onComplete)
     {
-        Init();
-        StartCoroutine(SlowUpdate());
-    }
+        try
+        {
+            Init();
+            StartCoroutine(SlowUpdate());
 
-    public bool isReady()
-    {
-        return ready;
+            // If successful
+            Console.WriteLine($"Prepare JobManager result: {ready} {null}");
+            onComplete?.Invoke(ready, null);
+        }
+        catch (Exception ex)
+        {
+            // On error
+            Console.WriteLine($"Prepare JobManager result: {false} {ex.Message}");
+            onComplete?.Invoke(false, ex.Message);
+        }
+
+        yield break;
     }
 }

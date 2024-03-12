@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
-public class ItemManager
+public class ItemManager : IPrepare
 {
     public static List<GameObject> itemPrefabs = new List<GameObject>();
     
@@ -19,14 +20,15 @@ public class ItemManager
         itemPrefabs = Resources.LoadAll<GameObject>("ItemPrefabs").ToList();
     }
 
-    private static void LoadItems()
+    private static void LoadItems(Action onComplete, Action<string> onError)
     {
         catalogVersion = TitleInfo.CatalogVersion;
         currency = TitleInfo.Currency;
 
-
-        GetCatalogItemsRequest request = new GetCatalogItemsRequest();
-        request.CatalogVersion = catalogVersion;
+        GetCatalogItemsRequest request = new GetCatalogItemsRequest() 
+        {
+            CatalogVersion = catalogVersion
+        };
 
         PlayFabClientAPI.GetCatalogItems(request,
             result => {
@@ -44,14 +46,12 @@ public class ItemManager
                 }
 
                 ready = true;
-
+                onComplete?.Invoke();
             },
             error => {
-                Debug.Log(error.ErrorMessage);
+                onError?.Invoke(error.ErrorMessage);
             });
     }
-
-
 
     public static Item GetItemPrefab(string id)
     {
@@ -59,14 +59,32 @@ public class ItemManager
         return itemprefab;
     }
 
-    public static void Prepare()
+    public IEnumerator Prepare(Action<bool, string> onComplete)
     {
-        ReadPrefabs();
-        LoadItems();
-    }
+        try
+        {
+            ReadPrefabs();
 
-    public static bool isReady()
-    {
-        return ready;
+            LoadItems(
+                () => {
+            // If successful
+            Console.WriteLine($"Prepare ItemManager result: {ready} {null}");
+                    onComplete?.Invoke(ready, null);
+                },
+                (errorMessage) => {
+            // On error
+            Console.WriteLine($"Prepare ItemManager result: {false} {errorMessage}");
+                    onComplete?.Invoke(false, errorMessage);
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            // On error
+            Console.WriteLine($"Prepare ItemManager result: {false} {ex.Message}");
+            onComplete?.Invoke(false, ex.Message);
+        }
+
+        yield break;
     }
 }

@@ -7,6 +7,7 @@ public class PlayerScript : MonoBehaviour
     public static PlayerScript player;
 
     public GameObject body;
+    public Transform radius;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class PlayerScript : MonoBehaviour
     public void UpdateBody()
     {
         body.GetComponent<CapsuleCollider>().radius = PlayerStatistics.currentDetectionRadius;
+        radius.localScale = new Vector3(PlayerStatistics.interactionRadius, PlayerStatistics.interactionRadius, 1);
     }
 
     public bool IsCloseEnough(Transform obj)
