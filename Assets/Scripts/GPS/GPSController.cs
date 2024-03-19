@@ -48,7 +48,7 @@ public class GPSController : MonoBehaviour, IPrepare
 
 
         // Start service before querying location
-        Input.location.Start(1f, 2f);
+        Input.location.Start(1f, 0.5f);
 
         // Wait until service initializes
         int maxWait = 20;
@@ -81,21 +81,18 @@ public class GPSController : MonoBehaviour, IPrepare
         try
         {
             // Access granted and location value could be retrieved
-            //latitude = Input.location.lastData.latitude;
-            //longitude = Input.location.lastData.longitude;
-
             CoordinateConverter.SetReferencePoint(latitude, longitude);
 
             isLocationServiceEnabled = true;
 
             // If successful
-            Console.WriteLine($"Prepare JobManager result: {isLocationServiceEnabled} {null}");
+            Console.WriteLine($"Prepare GPS Controller result: {isLocationServiceEnabled} {null}");
             onComplete?.Invoke(true, null);
         }
         catch (Exception ex)
         {
             // On error
-            Console.WriteLine($"Prepare JobManager result: {false} {ex.Message}");
+            Console.WriteLine($"Prepare GPS Controller result: {false} {ex.Message}");
             onComplete?.Invoke(false, ex.Message);
         }
 

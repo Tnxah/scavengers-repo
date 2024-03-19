@@ -12,8 +12,10 @@ public class Starter : MonoBehaviour
         // Add services to the list
         servicesToPrepare.Add(new JobManager());
         servicesToPrepare.Add(new ItemManager());
+        servicesToPrepare.Add(new GeoLocationManager());
         servicesToPrepare.Add(ItemGenerator.instance);
         servicesToPrepare.Add(GPSController.instance);
+        servicesToPrepare.Add(LocationPointController.instance);
 
         // Start the initialization coroutine
         StartCoroutine(InitializeGame());
