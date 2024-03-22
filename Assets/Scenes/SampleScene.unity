@@ -268,7 +268,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 10
-  m_Height: 500
+  m_Height: 100
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &10462479
@@ -63184,6 +63184,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Plane
+      objectReference: {fileID: 0}
+    - target: {fileID: 3489287368765857575, guid: 3b8155b80f1ab29449fe56f6c89d0433,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

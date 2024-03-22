@@ -1,40 +1,35 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class LocationPoint : MonoBehaviour, IInteractable, IHidable
+public class LocationPoint : MonoBehaviour, IInteractable
 {
     [SerializeField]
-    public string id;
+    protected string id;
     [SerializeField]
-    private string pointName;
+    protected string pointName;
     [SerializeField]
-    private float latitude;
+    protected float latitude;
     [SerializeField]
-    private float longitude;
+    protected float longitude;
     [SerializeField]
-    private LocationPointType type;
+    protected LocationPointType type;
     [SerializeField]
-    private string description;
+    protected string description;
 
+    protected Vector3 gameCoordinates;
 
-    private Vector3 gameCoordinates;
-
-    public void Interact()
+    public virtual void Interact()
     {
-        if (PlayerScript.player.IsCloseEnough(transform))
-            DebugService.Log($"id:{id}\nname: {pointName}\nlat/lon: {latitude}/{longitude}\ntype: {type}\ndescription: {description}");
     }
 
-    public void SetData(LocationPointData data)
+    public void SetData(ILocationPointData data)
     {
-        id = data.id;
-        pointName = data.name;
-        latitude = data.latitude;
-        longitude = data.longitude;
-        type = (LocationPointType)Enum.Parse(typeof(LocationPointType), data.type, true);
-        description = data.description;
+        id = data.Id;
+        pointName = data.Name;
+        latitude = data.Latitude;
+        longitude = data.Longitude;
+        type = (LocationPointType)Enum.Parse(typeof(LocationPointType), data.Type, true);
+        description = data.Description;
 
         gameCoordinates = CoordinateConverter.GPSToGamePosition(latitude, longitude);
         transform.position = gameCoordinates;

@@ -7,11 +7,12 @@ using UnityEngine;
 public class LocationPointController : MonoBehaviour, IPrepare
 {
     public static LocationPointController instance;
+
+    [SerializeField]
+    private LocationPointFactory locationPointFactory;
+
     private List<LocationPointData> pointsData;
     private List<LocationPoint> locationPoints = new List<LocationPoint>();
-    private bool hasLocationPoints;
-
-    public Dictionary<string, GameObject> locationPointPrefabs = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
@@ -19,6 +20,11 @@ public class LocationPointController : MonoBehaviour, IPrepare
         {
             instance = this;
         }
+    }
+
+    private void Start()
+    {
+        locationPointFactory = new LocationPointFactory();
     }
 
     public IEnumerator Prepare(Action<bool, string> onComplete)
@@ -32,10 +38,6 @@ public class LocationPointController : MonoBehaviour, IPrepare
                 string jsonString = value;
                 pointsData = DeserializeJsonToList<LocationPointData>(jsonString);
 
-                hasLocationPoints = true;
-
-                ReadPrefabs();
-
                 InstantiateLocationPoints();
 
                 StartCoroutine(TimeManager());
@@ -44,15 +46,13 @@ public class LocationPointController : MonoBehaviour, IPrepare
             },
             () =>
             {
-                hasLocationPoints = false;
-
                 onComplete?.Invoke(true, "No data available");
             });
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Prepare LocationPointController result: {false} {ex.Message}");
-            onComplete?.Invoke(false, ex.Message);
+            onComplete?.Invoke(true, ex.Message);
         }
 
         yield break;
@@ -68,16 +68,17 @@ public class LocationPointController : MonoBehaviour, IPrepare
     {
         locationPoints = locationPoints.OrderBy(x => x.DistanceToPlayer()).ToList();
     }
+
     private void InstantiateLocationPoints()
     {
-        if (!hasLocationPoints) return;
-
         foreach (var pointData in pointsData)
         {
-            var newPoint = Instantiate(locationPointPrefabs[pointData.type]).GetComponent<LocationPoint>();
-            newPoint.SetData(pointData);
-            newPoint.Hide();
-            locationPoints.Add(newPoint);
+            LocationPoint newPoint = locationPointFactory.CreateLocationPoint(pointData);
+            if (newPoint != null)
+            {
+                newPoint.SetData(pointData);
+                locationPoints.Add(newPoint);
+            }
         }
         SortByDistance();
         ManageLocationPoints();
@@ -94,16 +95,6 @@ public class LocationPointController : MonoBehaviour, IPrepare
             }
             locationPoint.Hide();
         }
-    }
-
-    private void ReadPrefabs()
-    {
-        var prefabs = Resources.LoadAll<GameObject>("LocationPoints").ToList();
-        foreach (var prefab in prefabs)
-        {
-            locationPointPrefabs.Add(prefab.name, prefab);
-        }
-        prefabs = null;
     }
 
     private IEnumerator TimeManager()
