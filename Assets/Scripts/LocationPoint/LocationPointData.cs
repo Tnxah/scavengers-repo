@@ -10,9 +10,3 @@ public class LocationPointData
     public string type;
     public string description;
 }
-
-[Serializable]
-public class LocationPointsWrapper
-{
-    public LocationPointData[] points;
-}

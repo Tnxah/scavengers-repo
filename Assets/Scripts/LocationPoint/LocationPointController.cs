@@ -7,17 +7,14 @@ using UnityEngine;
 public class LocationPointController : MonoBehaviour, IPrepare
 {
     public static LocationPointController instance;
-    private LocationPointsWrapper pointsData;
+    private List<LocationPointData> pointsData;
     private List<LocationPoint> locationPoints = new List<LocationPoint>();
+    private bool hasLocationPoints;
 
     public Dictionary<string, GameObject> locationPointPrefabs = new Dictionary<string, GameObject>();
-    public GameObject test;
 
     private void Awake()
     {
-        //
-        locationPointPrefabs.Add("INFO", test);
-        //
         if (instance == null)
         {
             instance = this;
@@ -33,15 +30,22 @@ public class LocationPointController : MonoBehaviour, IPrepare
             PlayFabTitleData.GetTitleData(key, value =>
             {
                 string jsonString = value;
-                string modifiedJsonString = "{\"points\":" + jsonString + "}";
-                pointsData = JsonUtility.FromJson<LocationPointsWrapper>(modifiedJsonString);
+                pointsData = DeserializeJsonToList<LocationPointData>(jsonString);
+
+                hasLocationPoints = true;
+
+                ReadPrefabs();
 
                 InstantiateLocationPoints();
+
+                StartCoroutine(TimeManager());
 
                 onComplete?.Invoke(true, null);
             },
             () =>
             {
+                hasLocationPoints = false;
+
                 onComplete?.Invoke(true, "No data available");
             });
         }
@@ -54,12 +58,60 @@ public class LocationPointController : MonoBehaviour, IPrepare
         yield break;
     }
 
+    private static List<T> DeserializeJsonToList<T>(string jsonArray)
+    {
+        string newJson = "{\"list\":" + jsonArray + "}";
+        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
+        return wrapper.list;
+    }
+    private void SortByDistance()
+    {
+        locationPoints = locationPoints.OrderBy(x => x.DistanceToPlayer()).ToList();
+    }
     private void InstantiateLocationPoints()
     {
-        foreach (var pointData in pointsData.points)
+        if (!hasLocationPoints) return;
+
+        foreach (var pointData in pointsData)
         {
-            var newPoint = Instantiate(locationPointPrefabs[pointData.type]);
-            newPoint.GetComponent<LocationPoint>().SetData(pointData);
+            var newPoint = Instantiate(locationPointPrefabs[pointData.type]).GetComponent<LocationPoint>();
+            newPoint.SetData(pointData);
+            newPoint.Hide();
+            locationPoints.Add(newPoint);
+        }
+        SortByDistance();
+        ManageLocationPoints();
+    }
+
+    private void ManageLocationPoints()
+    {
+        foreach (var locationPoint in locationPoints)
+        {
+            if (locationPoint.DistanceToPlayer() < 1000f)
+            {
+                locationPoint.Unhide();
+                continue;
+            }
+            locationPoint.Hide();
+        }
+    }
+
+    private void ReadPrefabs()
+    {
+        var prefabs = Resources.LoadAll<GameObject>("LocationPoints").ToList();
+        foreach (var prefab in prefabs)
+        {
+            locationPointPrefabs.Add(prefab.name, prefab);
+        }
+        prefabs = null;
+    }
+
+    private IEnumerator TimeManager()
+    {
+        while (locationPoints.Count > 0)
+        {
+            yield return new WaitForSeconds(10);
+            ManageLocationPoints();
         }
     }
 }

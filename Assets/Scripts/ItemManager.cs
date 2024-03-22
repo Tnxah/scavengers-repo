@@ -68,12 +68,12 @@ public class ItemManager : IPrepare
             LoadItems(
                 () => {
             // If successful
-            Console.WriteLine($"Prepare ItemManager result: {ready} {null}");
+            Debug.Log($"Prepare ItemManager result: {ready} {null}");
                     onComplete?.Invoke(ready, null);
                 },
                 (errorMessage) => {
-            // On error
-            Console.WriteLine($"Prepare ItemManager result: {false} {errorMessage}");
+                    // On error
+                    Debug.Log($"Prepare ItemManager result: {false} {errorMessage}");
                     onComplete?.Invoke(false, errorMessage);
                 }
             );
@@ -81,7 +81,7 @@ public class ItemManager : IPrepare
         catch (Exception ex)
         {
             // On error
-            Console.WriteLine($"Prepare ItemManager result: {false} {ex.Message}");
+            Debug.Log($"Prepare ItemManager result: {false} {ex.Message}");
             onComplete?.Invoke(false, ex.Message);
         }
 

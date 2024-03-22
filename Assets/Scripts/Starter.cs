@@ -44,7 +44,7 @@ public class Starter : MonoBehaviour
             if (!success)
             {
                 // Handle the error, e.g., log it or show a message
-                Debug.LogError($"Service initialization failed: {errorMsg}");
+                Debug.LogError($"Service initialization failed in {service.ToString()}:  {errorMsg}");
                 // Optionally, stop the initialization process
                 yield break;
             }

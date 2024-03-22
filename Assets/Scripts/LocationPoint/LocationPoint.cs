@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocationPoint : MonoBehaviour, IInteractable
+public class LocationPoint : MonoBehaviour, IInteractable, IHidable
 {
     [SerializeField]
     public string id;
@@ -17,6 +17,9 @@ public class LocationPoint : MonoBehaviour, IInteractable
     private LocationPointType type;
     [SerializeField]
     private string description;
+
+
+    private Vector3 gameCoordinates;
 
     public void Interact()
     {
@@ -33,8 +36,22 @@ public class LocationPoint : MonoBehaviour, IInteractable
         type = (LocationPointType)Enum.Parse(typeof(LocationPointType), data.type, true);
         description = data.description;
 
-        transform.position = CoordinateConverter.GPSToGamePosition(latitude, longitude);
-        print(CoordinateConverter.GPSToGamePosition(latitude, longitude));
+        gameCoordinates = CoordinateConverter.GPSToGamePosition(latitude, longitude);
+        transform.position = gameCoordinates;
     }
 
+    public float DistanceToPlayer()
+    {
+        return Vector3.Distance(PlayerScript.player.transform.position, gameCoordinates);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Unhide()
+    {
+        gameObject.SetActive(true);
+    }
 }

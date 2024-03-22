@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Android;
 
 public class GPSController : MonoBehaviour, IPrepare
 {
     public static float latitude;
     public static float longitude;
     public static bool isLocationServiceEnabled;
+
+    private bool isPermissionGranted;
+    private const string locationPermission = Permission.FineLocation;
 
     private const float RefreshTime = 0.5f;
     private static float lastRrefreshTime;
@@ -31,21 +35,39 @@ public class GPSController : MonoBehaviour, IPrepare
         }
     }
 
-    public IEnumerator Prepare(Action<bool, string> onComplete)
-    {
-        
-        // Check if user has location service enabled
+    private void GPSFunctionManage(Action<bool, string> onComplete) {
         if (!Input.location.isEnabledByUser)
         {
             Debug.Log("User has not enabled GPS");
             isLocationServiceEnabled = false;
             onComplete?.Invoke(false, "User has not enabled GPS");
 
-            //ask player to ensble GPS
-            //yield return new WaitUntil(() => Input.location.isEnabledByUser);
-            yield break;
+            //ask player to ensble GPS //TODO
         }
+    }
 
+    private void PermissionManage(Action<bool, string> onComplete)
+    {
+        Action<string> onPermissionGranted = permission =>
+        {
+            isPermissionGranted = true;
+        };
+
+        Action<string> onPermissionDenied = permission =>
+        {
+            onComplete?.Invoke(false, $"{permission} permission denied by player");
+        };
+
+        PermissionManager.GetPermission(locationPermission, onPermissionGranted, onPermissionDenied);
+    }
+
+    public IEnumerator Prepare(Action<bool, string> onComplete)
+    {
+        GPSFunctionManage(onComplete);
+        //yield return new WaitUntil(() => Input.location.isEnabledByUser);
+
+        PermissionManage(onComplete);
+        yield return new WaitUntil(() => isPermissionGranted);
 
         // Start service before querying location
         Input.location.Start(1f, 0.5f);
