@@ -18,9 +18,16 @@ public class PlayerInput : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(raycast, out hit))
                 {
+                    print("RAYCAST");
                     if (hit.collider.GetComponent<IInteractable>() != null)
                     {
-                        hit.collider.GetComponent<IInteractable>().Interact();
+                        print("RAYCAST !NULL");
+                        if (Physics.Raycast(PlayerScript.player.transform.position, (hit.collider.transform.position - PlayerScript.player.transform.position).normalized, out hit, Mathf.Infinity) && PlayerScript.player.IsCloseEnough(hit.point))
+                        {
+                            print("ONE MORE RAYCAST");
+                            Debug.DrawRay(PlayerScript.player.transform.position, (hit.collider.transform.position - PlayerScript.player.transform.position).normalized * 500, Color.red, 5f);
+                            hit.collider.GetComponent<IInteractable>().Interact();
+                        }
                     }
                 }
             }

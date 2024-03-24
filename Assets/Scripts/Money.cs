@@ -14,7 +14,7 @@ public class Money : Item
 
     public override void Interact()
     {
-        if (!interactable || !PlayerScript.player.IsCloseEnough(transform))
+        if (!interactable)
             return;
 
         PlayFabEconomy.IncreaseMoney(cost);

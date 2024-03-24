@@ -34,7 +34,7 @@ public class Item : MonoBehaviour, IInteractable, IHidable
 
     public virtual void Interact()
     {
-        if (!interactable || !PlayerScript.player.IsCloseEnough(transform))
+        if (!interactable)
             return;
 
         PlayFabInventoryService.GetItem(id.ToString());
