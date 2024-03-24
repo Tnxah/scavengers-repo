@@ -25,8 +25,8 @@ public class PlayerScript : MonoBehaviour
         radius.localScale = new Vector3(PlayerStatistics.interactionRadius, PlayerStatistics.interactionRadius, 1);
     }
 
-    public bool IsCloseEnough(Vector3 point)
+    public bool IsCloseEnough(Collider collider)
     {
-        return Vector3.Distance(transform.position, point) <= PlayerStatistics.interactionRadius;
+        return Vector3.Distance(transform.position, collider.ClosestPoint(transform.position)) <= PlayerStatistics.interactionRadius;
     }
 }
