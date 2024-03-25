@@ -72,4 +72,9 @@ public class Item : MonoBehaviour, IInteractable, IHidable
         }
         floater.enabled = true;
     }
+
+    public bool CanInteract()
+    {
+        throw new System.NotImplementedException();
+    }
 }

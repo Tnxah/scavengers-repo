@@ -1,22 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ResourcePointFactory
 {
     private int globalSeed;
+    private Dictionary<string, GameObject> resourcePointPrefabs;
 
     public ResourcePointFactory(int globalSeed)
     {
         this.globalSeed = globalSeed;
+        resourcePointPrefabs = new Dictionary<string, GameObject>();
+        LoadPrefabs();
     }
 
-    public string DetermineFeatureType(int cellHash)
+    public string DetermineResourceType(int cellHash)
     {
-        if (cellHash % 3 == 0) return "Metal Field";
-        if (cellHash % 3 == 1) return "Coal Field";
-        if (cellHash % 3 == 2) return "Water Source";
-        return "Ruins";
+        if (cellHash % 3 == 0) return "METAL";
+        if (cellHash % 3 == 1) return "COAL";
+        if (cellHash % 3 == 2) return "WATER";
+        return "RUINS";
     }
 
     public int GenerateGridCellHash(Vector2Int cell)
@@ -24,12 +28,32 @@ public class ResourcePointFactory
         return cell.x.GetHashCode() ^ cell.y.GetHashCode() ^ globalSeed;
     }
 
-    public void PlaceFeatureInCell(Vector2Int cell)
+    private void LoadPrefabs()
+    {
+        var prefabs = Resources.LoadAll<GameObject>("ResourcePoints").ToList();
+        foreach (var prefab in prefabs)
+        {
+            resourcePointPrefabs.Add(prefab.name, prefab);
+        }
+    }
+
+    public ResourcePoint CreateResourcePoint(Vector2Int cell)
     {
         int hash = GenerateGridCellHash(cell);
-        string featureType = DetermineFeatureType(hash);
 
-        // Logic to place the feature on the map, based on its type
-        Debug.Log($"Placing {featureType} in grid cell {cell}.");
+        string resourceType = DetermineResourceType(hash);
+
+        if (resourcePointPrefabs.TryGetValue(resourceType, out GameObject prefab))
+        {
+            GameObject instance = GameObject.Instantiate(prefab);
+
+            ResourcePoint resourcePoint;
+            if (instance.TryGetComponent<ResourcePoint>(out resourcePoint))
+            {
+                resourcePoint.SetData(cell, resourceType);
+                return resourcePoint;
+            }
+        }
+        return null;
     }
 }

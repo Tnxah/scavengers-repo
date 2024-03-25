@@ -76,7 +76,6 @@ public class LocationPointController : MonoBehaviour, IPrepare
             LocationPoint newPoint = locationPointFactory.CreateLocationPoint(pointData);
             if (newPoint != null)
             {
-                newPoint.SetData(pointData);
                 locationPoints.Add(newPoint);
             }
         }

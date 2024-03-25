@@ -15,6 +15,7 @@ public class Starter : MonoBehaviour
         servicesToPrepare.Add(new GeoLocationManager());
         servicesToPrepare.Add(ItemGenerator.instance);
         servicesToPrepare.Add(GPSController.instance);
+        servicesToPrepare.Add(MapController.instance);
         servicesToPrepare.Add(LocationPointController.instance);
 
         // Start the initialization coroutine

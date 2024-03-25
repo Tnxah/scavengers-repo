@@ -4,8 +4,8 @@ using UnityEngine;
 
 public static class CoordinateConverter
 {
-    private static float referenceLatitude; // Replace with your chosen reference latitude
-    private static float referenceLongitude; // Replace with your chosen reference longitude
+    private static float referenceLatitude;
+    private static float referenceLongitude; 
     private static readonly float EarthRadius = 6378137; // Earth’s mean radius in meter
 
     public static bool isReady;

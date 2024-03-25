@@ -49,4 +49,9 @@ public class LocationPoint : MonoBehaviour, IInteractable
     {
         gameObject.SetActive(true);
     }
+
+    public bool CanInteract()
+    {
+        throw new NotImplementedException();
+    }
 }
