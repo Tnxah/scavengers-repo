@@ -60,13 +60,13 @@ public class ItemGenerator : MonoBehaviour, IPrepare
             StartCoroutine(SlowUpdate());
 
             // If successful
-            Console.WriteLine($"Prepare JobManager result: {ready} {null}");
+            Console.WriteLine($"Prepare ItemGenerator result: {ready} {null}");
             onComplete?.Invoke(ready, null);
         }
         catch (Exception ex)
         {
             // On error
-            Console.WriteLine($"Prepare JobManager result: {false} {ex.Message}");
+            Console.WriteLine($"Prepare ItemGenerator result: {false} {ex.Message}");
             onComplete?.Invoke(false, ex.Message);
         }
 
