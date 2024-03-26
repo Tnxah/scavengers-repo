@@ -9,6 +9,8 @@ public class GPSController : MonoBehaviour, IPrepare
     public static float longitude;
     public static bool isLocationServiceEnabled;
 
+    public float lat, lon;
+
     private bool isPermissionGranted;
     private const string locationPermission = Permission.FineLocation;
 
@@ -27,6 +29,11 @@ public class GPSController : MonoBehaviour, IPrepare
 
     private void Update()
     {
+#if UNITY_EDITOR
+        latitude = lat;
+        longitude = lon;
+        return;
+#endif
         if (Input.location.status == LocationServiceStatus.Running/* && Time.time - lastRrefreshTime >= RefreshTime*/)
         {
             latitude = Input.location.lastData.latitude;
@@ -63,6 +70,13 @@ public class GPSController : MonoBehaviour, IPrepare
 
     public IEnumerator Prepare(Action<bool, string> onComplete)
     {
+#if UNITY_EDITOR
+        CoordinateConverter.SetReferencePoint(latitude, longitude);
+        isLocationServiceEnabled = true;
+        onComplete?.Invoke(true, null);
+        yield break;
+#endif
+
         GPSFunctionManage(onComplete);
         //yield return new WaitUntil(() => Input.location.isEnabledByUser);
 

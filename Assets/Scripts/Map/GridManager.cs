@@ -2,35 +2,51 @@ using UnityEngine;
 
 public class GridManager
 {
-    private const float cellSize = 1.5f;
+    private const float cellSize = .8f;
     private const float KmPerDegreeLatitude = 111.32f;
+    public static int seed { private get; set; }
+
+    private static readonly float latitudeOffset = GenerateOffset(seed, 0) * 1f; // Example small offset for latitude
+    private static readonly float longitudeOffset = GenerateOffset(seed, 1) * 1f; // Example small offset for longitude
 
     public static Vector2Int GPSToGrid(float latitude, float longitude)
     {
+        // Convert latitude and longitude to a "world position" considering the offsets
+        float worldLatitude = latitude + latitudeOffset;
+        float worldLongitude = longitude + longitudeOffset;
+
+        // Then, convert the "world position" to grid coordinates
         float latitudeCellSize = cellSize / KmPerDegreeLatitude;
         float longitudeCellSize = cellSize / (KmPerDegreeLatitude * Mathf.Cos(latitude * Mathf.Deg2Rad));
 
-        int x = Mathf.FloorToInt(longitude / longitudeCellSize);
-        int y = Mathf.FloorToInt(latitude / latitudeCellSize);
+        int x = Mathf.FloorToInt(worldLongitude / longitudeCellSize);
+        int y = Mathf.FloorToInt(worldLatitude / latitudeCellSize);
 
-        Debug.Log("GPSToGrid " + x + " " + y);
+        Debug.Log($"GPSToGrid: {x}, {y}");
         return new Vector2Int(x, y);
     }
 
     public static (float latitude, float longitude) GridToGPSCenter(Vector2Int gridCoordinate)
     {
-        // Calculate cell size in degrees
         float latitudeCellSizeDegrees = cellSize / KmPerDegreeLatitude;
-        // Placeholder for latitude to calculate longitude size - use the latitude at the bottom of the cell for approximation
-        float approximateLatitude = gridCoordinate.y * latitudeCellSizeDegrees;
-        float longitudeCellSizeDegrees = cellSize / (KmPerDegreeLatitude * Mathf.Cos(approximateLatitude * Mathf.Deg2Rad));
 
-        // Calculate the center of the cell in GPS coordinates
-        float centerLatitude = (gridCoordinate.y + 0.5f) * latitudeCellSizeDegrees;
-        float centerLongitude = (gridCoordinate.x + 0.5f) * longitudeCellSizeDegrees;
+        // Approximate center latitude for better longitude cell size calculation
+        float centerLatitudeApprox = (gridCoordinate.y + 0.5f) * latitudeCellSizeDegrees - latitudeOffset;
+        float longitudeCellSizeDegrees = cellSize / (KmPerDegreeLatitude * Mathf.Cos(centerLatitudeApprox * Mathf.Deg2Rad));
 
-        Debug.Log("GridToGPSCenter " + centerLatitude + " " + centerLongitude);
+        float centerLatitude = centerLatitudeApprox + latitudeOffset;
+        float centerLongitude = ((gridCoordinate.x + 0.5f) * longitudeCellSizeDegrees) - longitudeOffset;
+
+        Debug.Log($"GridToGPSCenter: {centerLatitude}, {centerLongitude}");
 
         return (centerLatitude, centerLongitude);
+    }
+
+    // Adjusted to generate relatively small offsets
+    private static float GenerateOffset(int seed, int type)
+    {
+        System.Random rand = new System.Random(seed + type); // Ensure different seeds for latitude/longitude
+        // Generate a small offset, e.g., within +/- 0.5 km range
+        return (float)(rand.NextDouble() - 0.5) * (type == 0 ? 0.01f : 0.01f); // Adjusted for more sensible shifts
     }
 }

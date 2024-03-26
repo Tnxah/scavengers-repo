@@ -25,6 +25,7 @@ public class MapController : MonoBehaviour, IPrepare
         yield return new WaitUntil(() => GPSController.isLocationServiceEnabled);
 
         resourcePointFactory = new ResourcePointFactory(MapSeed);
+        GridManager.seed = MapSeed;
 
         StartCoroutine(ManageResources());
 

@@ -34128,6 +34128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7be1de0a53a6f3e4a93e2953fcb3016b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lat: 52.24442
+  lon: 20.94575
 --- !u!114 &1149429107
 MonoBehaviour:
   m_ObjectHideFlags: 0
