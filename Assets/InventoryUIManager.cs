@@ -6,7 +6,7 @@ using UnityEngine;
 public class InventoryUIManager : MonoBehaviour
 {
     public static InventoryUIManager instance;
-    public static Dictionary<ItemType, UIInventoryUnit> items = new Dictionary<ItemType, UIInventoryUnit>();
+    public static Dictionary<ItemTypeLegacy, UIInventoryUnit> items = new Dictionary<ItemTypeLegacy, UIInventoryUnit>();
 
     public GameObject inventoryPanel;
     [SerializeField]
@@ -41,7 +41,7 @@ public class InventoryUIManager : MonoBehaviour
 
     private void AddToInventory(ItemInstance itemInstance)
     {
-        var item = ItemManager.itemPrefabs.Find(x => x.GetComponent<Item>().id.ToString().Equals(itemInstance.DisplayName))?.GetComponent<Item>();
+        var item = ItemManager.itemPrefabs.Find(x => x.GetComponent<ItemLegacy>().id.ToString().Equals(itemInstance.DisplayName))?.GetComponent<ItemLegacy>();
         if (!item)
             return;
 

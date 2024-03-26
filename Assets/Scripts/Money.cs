@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Money : Item
+public class Money : ItemLegacy
 {
     private int  max = 15;
 

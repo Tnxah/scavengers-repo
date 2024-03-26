@@ -53,9 +53,9 @@ public class ItemManager : IPrepare
             });
     }
 
-    public static Item GetItemPrefab(string id)
+    public static ItemLegacy GetItemPrefab(string id)
     {
-        var itemprefab = itemPrefabs.Find(x => x.GetComponent<Item>().id.ToString().Equals(id))?.GetComponent<Item>();
+        var itemprefab = itemPrefabs.Find(x => x.GetComponent<ItemLegacy>().id.ToString().Equals(id))?.GetComponent<ItemLegacy>();
         return itemprefab;
     }
 

@@ -5,10 +5,10 @@ using System.Linq;
 using Random = System.Random;
 using UnityEngine.UI;
 
-public class Item : MonoBehaviour, IInteractable, IHidable
+public class ItemLegacy : MonoBehaviour, IInteractable, IHidable
 {
     [SerializeField]
-    public ItemType id;
+    public ItemTypeLegacy id;
     public int cost;
     public string description;
 
