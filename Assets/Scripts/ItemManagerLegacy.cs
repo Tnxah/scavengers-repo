@@ -6,7 +6,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-public class ItemManager : IPrepare
+public class ItemManagerLegacy : IPrepare
 {
     public static List<GameObject> itemPrefabs = new List<GameObject>();
     

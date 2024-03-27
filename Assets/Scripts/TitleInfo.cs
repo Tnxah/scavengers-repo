@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public static class TitleInfo
 {
-    public static readonly string TitleId = "67F9D";
+    public const string TitleId = "67F9D";
     
-    public static readonly string CatalogVersion = "main";
-    public static readonly string ToolsCatalogVersion = "tools";
-    public static readonly string Currency = "CG";
+    public const string CatalogVersion = "main";
+    public const string CollectibleCatalogVersion = "collectible";
+    public const string CraftableCatalogVersion = "craftable";
+    public const string MinableCatalogVersion = "minable";
+    public const string Currency = "CG";
 
 
 }

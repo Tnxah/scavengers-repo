@@ -35,7 +35,7 @@ public class ItemGenerator : MonoBehaviour, IPrepare
 
     IEnumerator SlowUpdate()
     {
-        var items = ItemManager.itemPrefabs;
+        var items = ItemManagerLegacy.itemPrefabs;
 
         while (true) { 
             var rand = rnd.Next(0, 100);

@@ -41,7 +41,7 @@ public class InventoryUIManager : MonoBehaviour
 
     private void AddToInventory(ItemInstance itemInstance)
     {
-        var item = ItemManager.itemPrefabs.Find(x => x.GetComponent<ItemLegacy>().id.ToString().Equals(itemInstance.DisplayName))?.GetComponent<ItemLegacy>();
+        var item = ItemManagerLegacy.itemPrefabs.Find(x => x.GetComponent<ItemLegacy>().id.ToString().Equals(itemInstance.DisplayName))?.GetComponent<ItemLegacy>();
         if (!item)
             return;
 

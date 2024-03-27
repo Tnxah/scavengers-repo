@@ -1,16 +1,11 @@
-public class CollectibleItem : Item, IInteractable, IHidable
+public class CollectibleItem : Item, ICollectible, IHidable
 {
-    public bool CanInteract()
-    {
-        return true;
-    }
-
-    public void Hide()
+    public void Collect()
     {
         throw new System.NotImplementedException();
     }
 
-    public void Interact()
+    public void Hide()
     {
         throw new System.NotImplementedException();
     }
