@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
-public class ItemGenerator : MonoBehaviour, IPrepare
+public class ItemGeneratorLegacy : MonoBehaviour, IPrepare
 {
-    public static ItemGenerator instance;
+    public static ItemGeneratorLegacy instance;
 
     private Random rnd = new Random();
-    public float spawnDelay;
-    public float spawnChance;
-    public float spawnRadius;
+    private float spawnDelay;
+    private float spawnChance;
+    private float spawnRadius;
 
     private bool ready;
 
@@ -26,7 +26,7 @@ public class ItemGenerator : MonoBehaviour, IPrepare
     public void Init()
     {
         spawnDelay = PlayerStatistics.currentSpawnDelay;
-        spawnChance = PlayerStatistics.currentSpawnChance;
+        spawnChance = PlayerStatistics.currentSpawnChanceMultipier;
         spawnRadius = PlayerStatistics.spawnRadius;
 
         ready = true;

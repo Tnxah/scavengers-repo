@@ -36,7 +36,7 @@ public class LocationPointController : MonoBehaviour, IPrepare
             PlayFabTitleData.GetTitleData(key, value =>
             {
                 string jsonString = value;
-                pointsData = DeserializeJsonToList<LocationPointData>(jsonString);
+                pointsData = JSONService.DeserializeJsonToList<LocationPointData>(jsonString);
 
                 InstantiateLocationPoints();
 
@@ -58,12 +58,7 @@ public class LocationPointController : MonoBehaviour, IPrepare
         yield break;
     }
 
-    private static List<T> DeserializeJsonToList<T>(string jsonArray)
-    {
-        string newJson = "{\"list\":" + jsonArray + "}";
-        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
-        return wrapper.list;
-    }
+    
     private void SortByDistance()
     {
         locationPoints = locationPoints.OrderBy(x => x.DistanceToPlayer()).ToList();

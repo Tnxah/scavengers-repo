@@ -5,39 +5,38 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ItemManager : MonoBehaviour, IPrepare
+public class ItemManager : IPrepare
 {
-    private Dictionary<string, GameObject> itemPrefabs;
-
-    private Dictionary<string, CollectibleItemData> collectible;
-    private Dictionary<string, CraftableItemData> craftable;
-    private Dictionary<string, MinableItemData> minable;
+    private static Dictionary<string, GameObject> itemsToSpawn;
+    private static Dictionary<string, CollectibleItem> collectible;
+    private static Dictionary<string, CraftableItem> craftable;
+    private static Dictionary<string, MinableItem> minable;
 
     private void ReadPrefabs()
     {
-        itemPrefabs = new Dictionary<string, GameObject>();
+        itemsToSpawn = new Dictionary<string, GameObject>();
 
         var prefabs = Resources.LoadAll<GameObject>("ItemPrefabs/new prefabs").ToList();
         foreach (var prefab in prefabs)
         {
-            itemPrefabs.Add(prefab.name, prefab);
+            itemsToSpawn.Add(prefab.name, prefab);
         }
     }
 
     private void InitializeCatalogs()
     {
-        collectible = new Dictionary<string, CollectibleItemData>();
-        craftable = new Dictionary<string, CraftableItemData>();
-        minable = new Dictionary<string, MinableItemData>();
+        collectible = new Dictionary<string, CollectibleItem>();
+        craftable = new Dictionary<string, CraftableItem>();
+        minable = new Dictionary<string, MinableItem>();
     }
 
     private void LoadItems(Action<bool, string> onComplete)
     {
         InitializeCatalogs();
 
-        LoadCatalog(TitleInfo.CollectibleCatalogVersion, collectible, item => new CollectibleItemData(item), onComplete);
-        LoadCatalog(TitleInfo.CraftableCatalogVersion, craftable, item => new CraftableItemData(item), onComplete);
-        LoadCatalog(TitleInfo.MinableCatalogVersion, minable, item => new MinableItemData(item), onComplete);
+        LoadCatalog(TitleInfo.CollectibleCatalogVersion, collectible, item => new CollectibleItem(item), onComplete);
+        LoadCatalog(TitleInfo.CraftableCatalogVersion, craftable, item => new CraftableItem(item), onComplete);
+        LoadCatalog(TitleInfo.MinableCatalogVersion, minable, item => new MinableItem(item), onComplete);
 
         onComplete?.Invoke(true, null);
     }
@@ -72,5 +71,19 @@ public class ItemManager : MonoBehaviour, IPrepare
         LoadItems(onComplete);
 
         yield break;
+    }
+
+    public static GameObject TryGetItemPrefab(string key)
+    {
+        return itemsToSpawn.ContainsKey(key) ? itemsToSpawn[key] : null;
+    }
+    public static CollectibleItem TryGetCollectible(string key)
+    {
+        return collectible.ContainsKey(key) ? collectible[key] : null;
+    }
+    public static string GetRandomCollectibleKey()
+    {
+        var rand = new System.Random();
+        return collectible.ElementAt(rand.Next(0, collectible.Count)).Key;
     }
 }

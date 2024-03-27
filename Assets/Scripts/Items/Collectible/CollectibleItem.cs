@@ -1,17 +1,14 @@
-public class CollectibleItem : Item, ICollectible, IHidable
+using PlayFab.ClientModels;
+using System;
+
+[Serializable]
+public class CollectibleItem : Item
 {
-    public void Collect()
+    public int spawnChance;
+    public CollectibleItem(CatalogItem item) : base(item)
     {
-        throw new System.NotImplementedException();
-    }
+        var customData = GetCustomData();
 
-    public void Hide()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Unhide()
-    {
-        throw new System.NotImplementedException();
+        spawnChance = int.Parse(customData.SpawnChance);
     }
 }

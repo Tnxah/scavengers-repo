@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Seeker : Job
 {
-    private float[] spawnChanceMultiplyer = {1f, 1.1f, 1.2f, 1.3f};
-    private float[] detectionRadiusMultiplyer = {1f, 1.15f, 1.25f, 1.35f};
-    private float[] spawnDelayMultiplyer = {1f, 0.9f, 0.8f, 0.7f };
+    private float[] spawnChanceMultiplier = {1f, 1.2f, 1.4f, 1.6f};
+    private float[] detectionRadiusMultiplier = {1f, 1.15f, 1.25f, 1.35f};
+    private float[] spawnDelayMultiplier = {1f, 0.9f, 0.8f, 0.7f };
 
     private int[] itemsToLevelUp = {0, 100, 500, 600, 1200};
 
@@ -27,14 +25,14 @@ public class Seeker : Job
     {
         PlayFabInventoryService.onGetItemCallback += OnItemCollected;
         
-        PlayerStatistics.currentSpawnChance = PlayerStatistics.baseSpawnChance * spawnChanceMultiplyer[level];
+        PlayerStatistics.currentSpawnChanceMultipier = PlayerStatistics.baseSpawnChanceMultipier * spawnChanceMultiplier[level];
 
-        PlayerStatistics.currentDetectionRadius = PlayerStatistics.baseDetectionRadius * detectionRadiusMultiplyer[level];
+        PlayerStatistics.currentDetectionRadius = PlayerStatistics.baseDetectionRadius * detectionRadiusMultiplier[level];
 
-        PlayerStatistics.currentSpawnDelay = PlayerStatistics.baseSpawnDelay * spawnDelayMultiplyer[level];
+        PlayerStatistics.currentSpawnDelay = PlayerStatistics.baseSpawnDelay * spawnDelayMultiplier[level];
 
         PlayerScript.player.UpdateBody();
-        ItemGenerator.instance.Init();
+        ItemGeneratorLegacy.instance.Init();
         Debug.Log(level);
     }
 
@@ -42,14 +40,14 @@ public class Seeker : Job
     {
         PlayFabInventoryService.onGetItemCallback -= OnItemCollected;
 
-        PlayerStatistics.currentSpawnChance = PlayerStatistics.baseSpawnChance;
+        PlayerStatistics.currentSpawnChanceMultipier = PlayerStatistics.baseSpawnChanceMultipier;
 
         PlayerStatistics.currentDetectionRadius = PlayerStatistics.baseDetectionRadius;
 
         PlayerStatistics.currentSpawnDelay = PlayerStatistics.baseSpawnDelay;
 
         PlayerScript.player.UpdateBody();
-        ItemGenerator.instance.Init();
+        ItemGeneratorLegacy.instance.Init();
     }
 
     public override void LevelUp()
