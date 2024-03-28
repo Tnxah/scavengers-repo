@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SceneItem : MonoBehaviour, IInteractable, IHidable
 {
-    public string itemId { get; private set; }
+    [SerializeField]
+    public string itemId;
     public int spawnChance  { get; private set;   }
 
     public void Initialize(CollectibleItem item)

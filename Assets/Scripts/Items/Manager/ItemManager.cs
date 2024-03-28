@@ -30,13 +30,48 @@ public class ItemManager : IPrepare
         minable = new Dictionary<string, MinableItem>();
     }
 
-    private void LoadItems(Action<bool, string> onComplete)
+    private IEnumerator LoadItems(Action<bool, string> onComplete)
     {
         InitializeCatalogs();
 
-        LoadCatalog(TitleInfo.CollectibleCatalogVersion, collectible, item => new CollectibleItem(item), onComplete);
-        LoadCatalog(TitleInfo.CraftableCatalogVersion, craftable, item => new CraftableItem(item), onComplete);
-        LoadCatalog(TitleInfo.MinableCatalogVersion, minable, item => new MinableItem(item), onComplete);
+        bool isCompleted = false;
+        bool success = true;
+        string errorMsg = null;
+
+        LoadCatalog(TitleInfo.CollectibleCatalogVersion, collectible, item => new CollectibleItem(item), (result, error) =>
+        {
+            success = result? success : false;
+            errorMsg = error;
+            isCompleted = true;
+        });
+
+        yield return new WaitUntil(() => isCompleted);
+        isCompleted = false;
+
+
+        LoadCatalog(TitleInfo.CraftableCatalogVersion, craftable, item => new CraftableItem(item), (result, error) =>
+        {
+            success = result ? success : false;
+            errorMsg = error;
+            isCompleted = true;
+        });
+
+        yield return new WaitUntil(() => isCompleted);
+        isCompleted = false;
+        LoadCatalog(TitleInfo.MinableCatalogVersion, minable, item => new MinableItem(item), (result, error) =>
+        {
+            success = result ? success : false;
+            errorMsg = error;
+            isCompleted = true;
+        });
+
+        yield return new WaitUntil(() => isCompleted);
+
+        if (!success)
+        {
+            onComplete?.Invoke(false, "ItemManager catalog not loaded");
+            yield break;
+        }
 
         onComplete?.Invoke(true, null);
     }
@@ -84,6 +119,6 @@ public class ItemManager : IPrepare
     public static string GetRandomCollectibleKey()
     {
         var rand = new System.Random();
-        return collectible.ElementAt(rand.Next(0, collectible.Count)).Key;
+        return collectible.ElementAt(rand.Next(0, collectible.Count - 1)).Key;
     }
 }
