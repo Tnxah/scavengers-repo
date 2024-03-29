@@ -5,12 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ItemManager : IPrepare
+public class ItemManager : MonoBehaviour, IPrepare
 {
+    public static ItemManager instance;
+
     private static Dictionary<string, GameObject> itemsToSpawn;
     private static Dictionary<string, CollectibleItem> collectible;
     private static Dictionary<string, CraftableItem> craftable;
     private static Dictionary<string, MinableItem> minable;
+
+    private void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+    }
 
     private void ReadPrefabs()
     {
@@ -30,14 +40,12 @@ public class ItemManager : IPrepare
         minable = new Dictionary<string, MinableItem>();
     }
 
-    private IEnumerator LoadItems(Action<bool, string> onComplete)
+    private IEnumerator LoadItems(Action<bool> onComplete)
     {
         InitializeCatalogs();
-
         bool isCompleted = false;
         bool success = true;
         string errorMsg = null;
-
         LoadCatalog(TitleInfo.CollectibleCatalogVersion, collectible, item => new CollectibleItem(item), (result, error) =>
         {
             success = result? success : false;
@@ -47,7 +55,6 @@ public class ItemManager : IPrepare
 
         yield return new WaitUntil(() => isCompleted);
         isCompleted = false;
-
 
         LoadCatalog(TitleInfo.CraftableCatalogVersion, craftable, item => new CraftableItem(item), (result, error) =>
         {
@@ -69,11 +76,11 @@ public class ItemManager : IPrepare
 
         if (!success)
         {
-            onComplete?.Invoke(false, "ItemManager catalog not loaded");
+            onComplete?.Invoke(false);
             yield break;
         }
 
-        onComplete?.Invoke(true, null);
+        onComplete?.Invoke(true);
     }
 
     private void LoadCatalog<T>(string catalog, Dictionary<string, T> catalogDictionary, Func<CatalogItem, T> createInstance, Action<bool, string> onComplete)
@@ -93,6 +100,7 @@ public class ItemManager : IPrepare
 
                     catalogDictionary.Add(item.ItemId, data);
                 }
+                onComplete?.Invoke(true, null);
             },
             error => {
                 onComplete?.Invoke(false, error.ErrorMessage);
@@ -102,9 +110,7 @@ public class ItemManager : IPrepare
     public IEnumerator Prepare(Action<bool, string> onComplete)
     {
         ReadPrefabs();
-
-        LoadItems(onComplete);
-
+        StartCoroutine(LoadItems(result => onComplete?.Invoke(result, null)));
         yield break;
     }
 

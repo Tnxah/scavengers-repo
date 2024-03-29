@@ -11,7 +11,7 @@ public class Starter : MonoBehaviour
     {
         // Add services to the list
         servicesToPrepare.Add(new JobManager());
-        servicesToPrepare.Add(new ItemManager());
+        servicesToPrepare.Add(ItemManager.instance);
         servicesToPrepare.Add(new GeoLocationManager());
         servicesToPrepare.Add(SpawnController.instance);
         servicesToPrepare.Add(GPSController.instance);
