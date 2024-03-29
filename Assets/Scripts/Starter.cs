@@ -12,6 +12,7 @@ public class Starter : MonoBehaviour
         // Add services to the list
         servicesToPrepare.Add(new JobManager());
         servicesToPrepare.Add(ItemManager.instance);
+        servicesToPrepare.Add(InventoryUIManager.instance);
         servicesToPrepare.Add(new GeoLocationManager());
         servicesToPrepare.Add(SpawnController.instance);
         servicesToPrepare.Add(GPSController.instance);
@@ -26,6 +27,7 @@ public class Starter : MonoBehaviour
     {
         yield return new WaitUntil(() => AccountManager.isLoggedIn);
         yield return new WaitUntil(() => PlayfabStatisticsManager.loaded);
+        yield return new WaitUntil(() => PlayFabInventoryService.getInventoryReady);
 
         foreach (IPrepare service in servicesToPrepare)
         {

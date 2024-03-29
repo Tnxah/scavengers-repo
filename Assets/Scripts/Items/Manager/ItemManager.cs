@@ -9,7 +9,7 @@ public class ItemManager : MonoBehaviour, IPrepare
 {
     public static ItemManager instance;
 
-    private static Dictionary<string, GameObject> itemsToSpawn;
+    private static Dictionary<string, GameObject> prefabs;
     private static Dictionary<string, CollectibleItem> collectible;
     private static Dictionary<string, CraftableItem> craftable;
     private static Dictionary<string, MinableItem> minable;
@@ -24,12 +24,12 @@ public class ItemManager : MonoBehaviour, IPrepare
 
     private void ReadPrefabs()
     {
-        itemsToSpawn = new Dictionary<string, GameObject>();
+        ItemManager.prefabs = new Dictionary<string, GameObject>();
 
         var prefabs = Resources.LoadAll<GameObject>("ItemPrefabs/new prefabs").ToList();
         foreach (var prefab in prefabs)
         {
-            itemsToSpawn.Add(prefab.name, prefab);
+            ItemManager.prefabs.Add(prefab.name, prefab);
         }
     }
 
@@ -40,19 +40,20 @@ public class ItemManager : MonoBehaviour, IPrepare
         minable = new Dictionary<string, MinableItem>();
     }
 
+
     private IEnumerator LoadItems(Action<bool> onComplete)
     {
         InitializeCatalogs();
         bool isCompleted = false;
         bool success = true;
         string errorMsg = null;
+
         LoadCatalog(TitleInfo.CollectibleCatalogVersion, collectible, item => new CollectibleItem(item), (result, error) =>
         {
             success = result? success : false;
             errorMsg = error;
             isCompleted = true;
         });
-
         yield return new WaitUntil(() => isCompleted);
         isCompleted = false;
 
@@ -62,16 +63,15 @@ public class ItemManager : MonoBehaviour, IPrepare
             errorMsg = error;
             isCompleted = true;
         });
-
         yield return new WaitUntil(() => isCompleted);
         isCompleted = false;
+
         LoadCatalog(TitleInfo.MinableCatalogVersion, minable, item => new MinableItem(item), (result, error) =>
         {
             success = result ? success : false;
             errorMsg = error;
             isCompleted = true;
         });
-
         yield return new WaitUntil(() => isCompleted);
 
         if (!success)
@@ -116,7 +116,7 @@ public class ItemManager : MonoBehaviour, IPrepare
 
     public static GameObject TryGetItemPrefab(string key)
     {
-        return itemsToSpawn.ContainsKey(key) ? itemsToSpawn[key] : null;
+        return prefabs.ContainsKey(key) ? prefabs[key] : null;
     }
     public static CollectibleItem TryGetCollectible(string key)
     {

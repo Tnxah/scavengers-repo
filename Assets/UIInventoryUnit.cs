@@ -24,7 +24,7 @@ public class UIInventoryUnit : MonoBehaviour
             return;
         }
 
-        InventoryUIManager.instance.deleteConfirmation.Show(id);
+        InventoryUIManagerLegacy.instance.deleteConfirmation.Show(id);
     }
 
     private void DestroyCheck()

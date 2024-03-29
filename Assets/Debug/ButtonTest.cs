@@ -7,7 +7,7 @@ public class ButtonTest : MonoBehaviour
     public GameObject mapPrefab;
     public void Refresh()
     {
-        InventoryUIManager.instance.LoadInventory();
+        InventoryUIManagerLegacy.instance.LoadInventory();
     }
     public void AddItem()
     {

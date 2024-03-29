@@ -8,7 +8,22 @@ public class SceneItem : MonoBehaviour, IInteractable, IHidable
     public string itemId;
     public int spawnChance  { get; private set;   }
 
-    public void Initialize(CollectibleItem item)
+    private Renderer[] renderers;
+    private Floater floater;
+
+    private bool active;
+
+    private void Awake()
+    {
+        renderers = GetComponentsInChildren<Renderer>();
+        floater = GetComponent<Floater>();
+
+#if !UNITY_EDITOR
+#endif
+        Hide();
+    }
+
+    public virtual void Initialize(CollectibleItem item)
     {
         itemId = item.id;
         spawnChance = item.spawnChance;
@@ -16,19 +31,35 @@ public class SceneItem : MonoBehaviour, IInteractable, IHidable
 
     public bool CanInteract() => true;
 
-    public void Interact()
+    public virtual void Interact()
     {
+        if (!active) return;
+
         PlayFabInventoryService.GetItem(itemId);
         Destroy(gameObject);
     }
 
     public void Hide()
     {
-        GetComponentsInChildren<RenderBuffer>();
+        active = false;
+
+        foreach (var renderer in renderers)
+        {
+            renderer.enabled = false;
+        }
+
+        floater.enabled = false;
     }
 
     public void Unhide()
     {
-        throw new System.NotImplementedException();
+        active = true;
+
+        foreach (var renderer in renderers)
+        {
+            renderer.enabled = true;
+        }
+
+        floater.enabled = true;
     }
 }

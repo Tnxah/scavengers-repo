@@ -2,21 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Money : ItemLegacy
+public class SceneItemMoney : SceneItem
 {
-    private int  max = 15;
+    private int cost;
 
-    public override void Awake()
+    public override void Initialize(CollectibleItem item)
     {
-        base.Awake();
-        cost += Random.Range(cost - 1, max);
+        base.Initialize(item);
+        cost = Random.Range(1, item.cost);
     }
 
     public override void Interact()
     {
-        if (!interactable)
-            return;
-
+        print(cost);
         PlayFabEconomy.IncreaseMoney(cost);
         Destroy(gameObject);
     }
