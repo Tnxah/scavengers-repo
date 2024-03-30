@@ -125,6 +125,6 @@ public class ItemManager : MonoBehaviour, IPrepare
     public static string GetRandomCollectibleKey()
     {
         var rand = new System.Random();
-        return collectible.ElementAt(rand.Next(0, collectible.Count - 1)).Key;
+        return collectible.ElementAt(rand.Next(0, collectible.Count)).Key;
     }
 }

@@ -11,8 +11,6 @@ public class SceneItem : MonoBehaviour, IInteractable, IHidable
     private Renderer[] renderers;
     private Floater floater;
 
-    private bool active;
-
     private void Awake()
     {
         renderers = GetComponentsInChildren<Renderer>();
@@ -33,16 +31,12 @@ public class SceneItem : MonoBehaviour, IInteractable, IHidable
 
     public virtual void Interact()
     {
-        if (!active) return;
-
         PlayFabInventoryService.GetItem(itemId);
         Destroy(gameObject);
     }
 
     public void Hide()
     {
-        active = false;
-
         foreach (var renderer in renderers)
         {
             renderer.enabled = false;
@@ -53,8 +47,6 @@ public class SceneItem : MonoBehaviour, IInteractable, IHidable
 
     public void Unhide()
     {
-        active = true;
-
         foreach (var renderer in renderers)
         {
             renderer.enabled = true;
