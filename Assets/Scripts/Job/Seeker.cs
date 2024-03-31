@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Seeker : Job
 {
+    private const int unlockLevel = 2;
+
     private float[] spawnChanceMultiplier = {1f, 1.2f, 1.4f, 1.6f};
     private float[] detectionRadiusMultiplier = {1f, 1.15f, 1.25f, 1.35f};
     private float[] spawnDelayMultiplier = {1f, 0.9f, 0.8f, 0.7f };
@@ -65,7 +67,7 @@ public class Seeker : Job
     {
         var playerLevel = PlayfabStatisticsManager.GetStat(StatisticsKeys.playerLevelKey);
 
-        if (playerLevel >= 2)
+        if (!unlocked && playerLevel >= unlockLevel)
         {
             unlocked = true;
             PlayfabStatisticsManager.SaveStat(StatisticsKeys.seekerUnlockedKey, Convert.ToInt32(unlocked));

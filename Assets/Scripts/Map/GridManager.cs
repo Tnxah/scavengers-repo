@@ -4,10 +4,21 @@ public class GridManager
 {
     private const float cellSize = .8f;
     private const float KmPerDegreeLatitude = 111.32f;
-    public static int seed { private get; set; }
 
-    private static readonly float latitudeOffset = GenerateOffset(seed, 0) * 1f; // Example small offset for latitude
-    private static readonly float longitudeOffset = GenerateOffset(seed, 1) * 1f; // Example small offset for longitude
+    private static float latitudeOffset;
+    private static float longitudeOffset;
+
+    private static int seed;
+    public static int Seed
+    {
+        private get { return seed; }
+        set
+        {
+            seed = value;
+            latitudeOffset = GenerateOffset(seed, 0) * 1f;
+            longitudeOffset = GenerateOffset(seed, 1) * 1f;
+        }
+    }
 
     public static Vector2Int GPSToGrid(float latitude, float longitude)
     {
