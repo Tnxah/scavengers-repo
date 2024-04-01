@@ -7,16 +7,23 @@ public class ResourcePoint : MonoBehaviour, IInteractable
 {
     [SerializeField]
     protected ResourcePointType type;
+    [SerializeField]
+    private string neededToolId;
+    [SerializeField]
+    private string minableResourceId;
 
     protected Vector3 gameCoordinates;
 
     public bool CanInteract()
     {
-        throw new NotImplementedException();
+        print(InventoryUIManager.instance.HasTool(neededToolId));
+        return InventoryUIManager.instance.HasTool(neededToolId);
     }
 
     public virtual void Interact()
     {
+        PlayFabInventoryService.GetItem(minableResourceId);
+        print($"Gives: {minableResourceId}");
     }
 
     public void SetData(Vector2Int cell, string type)

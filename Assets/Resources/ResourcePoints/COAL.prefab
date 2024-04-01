@@ -238,6 +238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  neededToolId: pickaxe
+  minableResourceId: coal
 --- !u!1 &5686267158863498953
 GameObject:
   m_ObjectHideFlags: 0

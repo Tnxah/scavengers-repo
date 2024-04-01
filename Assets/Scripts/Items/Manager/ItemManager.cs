@@ -122,6 +122,14 @@ public class ItemManager : MonoBehaviour, IPrepare
     {
         return collectible.ContainsKey(key) ? collectible[key] : null;
     }
+    public static CraftableItem TryGetCraftable(string key)
+    {
+        return craftable.ContainsKey(key) ? craftable[key] : null;
+    }
+    public static MinableItem TryGetMinable(string key)
+    {
+        return minable.ContainsKey(key) ? minable[key] : null;
+    }
     public static string GetRandomCollectibleKey()
     {
         var rand = new System.Random();

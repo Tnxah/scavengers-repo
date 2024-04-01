@@ -19,7 +19,7 @@ public class PlayerInput : MonoBehaviour
                 if (Physics.Raycast(raycast, out hit))
                 {
                     IInteractable interactable;
-                    if (hit.collider.TryGetComponent(out interactable))
+                    if (hit.collider.TryGetComponent(out interactable) && interactable.CanInteract())
                     {
                         if (PlayerScript.player.IsCloseEnough(hit.collider))
                         {

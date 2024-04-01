@@ -34,19 +34,29 @@ public class InventoryUIManager : MonoBehaviour, IPrepare
         print("LoadInv");
         foreach (var item in PlayFabInventoryService.items)
         {
+            print(item.ItemId);
             AddToInventory(item);
         }
     }
 
     private void AddToInventory(ItemInstance itemInstance)
     {
-        var item = ItemManager.TryGetCollectible(itemInstance.ItemId);
-        if (item == null)
-            return;
+        Item item;
 
-        if (resources.ContainsKey(item.id))
+        if ((item = ItemManager.TryGetCollectible(itemInstance.ItemId)) != null || (item = ItemManager.TryGetMinable(itemInstance.ItemId)) != null)
+            AddTo(resources, item, itemInstance);
+        else if ((item = ItemManager.TryGetCraftable(itemInstance.ItemId)) != null && item.type.Equals(ItemType.TOOL))
         {
-            resources[item.id].count.text = itemInstance.RemainingUses.ToString();
+            print(item.id);
+            AddTo(tools, item, itemInstance);
+        }
+    }
+
+    private void AddTo(Dictionary<string, UIInventoryUnit> catalog, Item item, ItemInstance itemInstance)
+    {
+        if (catalog.ContainsKey(item.id))
+        {
+            catalog[item.id].count.text = itemInstance.RemainingUses.ToString();
             return;
         }
 
@@ -58,7 +68,12 @@ public class InventoryUIManager : MonoBehaviour, IPrepare
         newItem.count.text = itemInstance.RemainingUses.ToString();
         //newItem.icon = item.icon;
 
-        resources.Add(item.id, newItem);
+        catalog.Add(item.id, newItem);
+    }
+
+    public bool HasTool(string toolId)
+    {
+        return tools.ContainsKey(toolId);
     }
 
     public void OpenCloseInventory()
