@@ -38,16 +38,13 @@ public class DebugMap : MonoBehaviour
     private IEnumerator LoadMap()
     {
         yield return new WaitUntil(() => GPSController.isLocationServiceEnabled);
-        print("Texture load start");
         var gameposition = CoordinateConverter.GPSToGamePosition(GPSController.latitude, GPSController.longitude);
         transform.position = new Vector3(gameposition.x, 0.01f, gameposition.z);
 
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(GetURL());
         yield return request.SendWebRequest();
-        print("tex " + GetURL());
 
         yield return new WaitUntil(() => request.result == UnityWebRequest.Result.Success);
-        print("Texture loaded");
         GetComponent<Renderer>().material.mainTexture = null;
         Texture texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
         GetComponent<Renderer>().material.mainTexture = texture;

@@ -18,11 +18,11 @@ public class UIInventoryUnit : MonoBehaviour
 
     public void Delete()
     {
-        if (int.Parse(count.text) == 1)
-        {
-            PlayFabInventoryService.ConsumeItem(id);
-            return;
-        }
+    //    if (int.Parse(count.text) == 1)
+    //    {
+    //        PlayFabInventoryService.ConsumeItem(id);
+    //        return;
+    //    }
 
         InventoryUIManagerLegacy.instance.deleteConfirmation.Show(id);
     }

@@ -52,6 +52,6 @@ public class LocationPoint : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        throw new NotImplementedException();
+        return true;
     }
 }

@@ -16,14 +16,13 @@ public class ResourcePoint : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        print(InventoryUIManager.instance.HasTool(neededToolId));
-        return InventoryUIManager.instance.HasTool(neededToolId);
+        return neededToolId.Equals("") ? true : InventoryUIManager.instance.HasTool(neededToolId);
     }
 
     public virtual void Interact()
     {
         PlayFabInventoryService.GetItem(minableResourceId);
-        print($"Gives: {minableResourceId}");
+        PlayFabInventoryService.ConsumeItem(neededToolId);
     }
 
     public void SetData(Vector2Int cell, string type)

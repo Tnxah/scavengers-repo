@@ -16,7 +16,6 @@ public static class CoordinateConverter
         referenceLongitude = longitude;
 
         isReady = true;
-        Debug.Log("SetReferencePoint lat: " + latitude + " lon: " + longitude);
     }
 
     public static Vector3 GPSToGamePosition(float latitude, float longitude)

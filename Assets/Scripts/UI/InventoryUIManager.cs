@@ -34,7 +34,6 @@ public class InventoryUIManager : MonoBehaviour, IPrepare
         print("LoadInv");
         foreach (var item in PlayFabInventoryService.items)
         {
-            print(item.ItemId);
             AddToInventory(item);
         }
     }
@@ -44,10 +43,11 @@ public class InventoryUIManager : MonoBehaviour, IPrepare
         Item item;
 
         if ((item = ItemManager.TryGetCollectible(itemInstance.ItemId)) != null || (item = ItemManager.TryGetMinable(itemInstance.ItemId)) != null)
+        {
             AddTo(resources, item, itemInstance);
+        }
         else if ((item = ItemManager.TryGetCraftable(itemInstance.ItemId)) != null && item.type.Equals(ItemType.TOOL))
         {
-            print(item.id);
             AddTo(tools, item, itemInstance);
         }
     }
