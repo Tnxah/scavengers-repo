@@ -50,7 +50,7 @@ public class AccountManager
 
         onSignInCallback?.Invoke();
 
-        PlayFabInventoryService.GetUserInventory();
+        //PlayFabInventoryService.GetUserInventory();
 
         PlayfabStatisticsManager.LoadStatistics();
     }

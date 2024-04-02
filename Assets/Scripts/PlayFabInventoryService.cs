@@ -82,9 +82,24 @@ public class PlayFabInventoryService
     }
 
 
-    public static void GetUserInventory()
+    public static List<PlayFab.ClientModels.ItemInstance> GetUserInventory()
     {
-        PlayFabClientAPI.GetUserInventory(new PlayFab.ClientModels.GetUserInventoryRequest(), OnGetUserInventorySuccess, OnGetUserInventoryError);
+        List<PlayFab.ClientModels.ItemInstance> inventory = new List<PlayFab.ClientModels.ItemInstance>();
+
+        //PlayFabClientAPI.GetUserInventory(new PlayFab.ClientModels.GetUserInventoryRequest(), OnGetUserInventorySuccess, OnGetUserInventoryError);
+        PlayFabClientAPI.GetUserInventory(new PlayFab.ClientModels.GetUserInventoryRequest(), 
+            (result) => {
+                inventory = result.Inventory;
+                onGetInventoryCallback?.Invoke();
+                getInventoryReady = true;
+            }, 
+            (error) => { 
+                inventory = null;
+                Debug.Log("Get inventory unsuccessful: " + error.ErrorMessage);
+            });
+
+
+        return inventory;
     }
 
 
