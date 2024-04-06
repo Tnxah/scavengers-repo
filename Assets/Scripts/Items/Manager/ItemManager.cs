@@ -135,4 +135,15 @@ public class ItemManager : MonoBehaviour, IPrepare
         var rand = new System.Random();
         return collectible.ElementAt(rand.Next(0, collectible.Count)).Key;
     }
+    public static ItemType GetType(string itemId)
+    {
+        if (TryGetCollectible(itemId) != null || TryGetMinable(itemId) != null)
+        {
+            return ItemType.RESOURCE;
+        }
+        else
+        {
+            return ItemType.TOOL;
+        }
+    }
 }

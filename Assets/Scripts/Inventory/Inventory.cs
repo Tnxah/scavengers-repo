@@ -1,42 +1,14 @@
 using PlayFab.ClientModels;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Inventory
+public static class Inventory
 {
-    private Dictionary<string, ItemInstance> resources;
-    private Dictionary<string, ItemInstance> tools;
+    public static Dictionary<string, ItemInstance> items = new Dictionary<string, ItemInstance>();
 
-    public Inventory()
+    public static bool HasTool(string toolId)
     {
-        AddToInventory(PlayFabInventoryService.GetUserInventory());
-    }
+        var tool = items.ContainsKey(toolId);
 
-    private void AddToInventory(List<ItemInstance> itemInstances)
-    {
-        foreach (var itemInstance in itemInstances)
-        {
-            Add(itemInstance);
-        }        
-    }
-
-    private void Add(ItemInstance itemInstance)
-    {
-        Dictionary<string, ItemInstance> catalog;
-
-        if ((ItemManager.TryGetCollectible(itemInstance.ItemId)) != null || (ItemManager.TryGetMinable(itemInstance.ItemId)) != null)
-        {
-            catalog = resources;
-        }
-        else 
-        {
-            catalog = tools;
-        }
-
-        if (!catalog.ContainsKey(itemInstance.ItemId))
-        {
-            catalog.Add(itemInstance.ItemId, itemInstance);
-        }
+        return tool && ItemManager.TryGetCraftable(toolId).type.Equals(ItemType.TOOL);
     }
 }

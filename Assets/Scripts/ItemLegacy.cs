@@ -37,7 +37,7 @@ public class ItemLegacy : MonoBehaviour, IInteractable, IHidable
         if (!interactable)
             return;
 
-        PlayFabInventoryService.GetItem(id.ToString());
+        PlayFabInventoryService.GrantItem(id.ToString(), TitleInfo.CatalogVersion);
         Destroy(gameObject);
     }
 

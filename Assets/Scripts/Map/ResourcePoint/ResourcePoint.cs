@@ -16,12 +16,12 @@ public class ResourcePoint : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        return neededToolId.Equals("") ? true : InventoryUIManager.instance.HasTool(neededToolId);
+        return neededToolId.Equals("") ? true : Inventory.HasTool(neededToolId);
     }
 
     public virtual void Interact()
     {
-        PlayFabInventoryService.GetItem(minableResourceId);
+        PlayFabInventoryService.GrantItem(minableResourceId, TitleInfo.MinableCatalogVersion);
         PlayFabInventoryService.ConsumeItem(neededToolId);
     }
 

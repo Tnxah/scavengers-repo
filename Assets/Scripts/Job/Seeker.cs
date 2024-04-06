@@ -25,7 +25,7 @@ public class Seeker : Job
 
     public override void ApplyJobProperties()
     {
-        PlayFabInventoryService.onGetItemCallback += OnItemCollected;
+        //PlayFabInventoryService.onGrantItemCallback += OnItemCollected; //TODO item collected only for fouded items
         
         PlayerStatistics.currentSpawnChanceMultipier = PlayerStatistics.baseSpawnChanceMultipier * spawnChanceMultiplier[level];
 
@@ -40,7 +40,7 @@ public class Seeker : Job
 
     public override void CancelJobProperties()
     {
-        PlayFabInventoryService.onGetItemCallback -= OnItemCollected;
+        //PlayFabInventoryService.onGrantItemCallback -= OnItemCollected; //TODO item collected only for fouded items
 
         PlayerStatistics.currentSpawnChanceMultipier = PlayerStatistics.baseSpawnChanceMultipier;
 
@@ -76,9 +76,9 @@ public class Seeker : Job
         return unlocked;
     }
 
-    public void OnItemCollected()
+    public void OnItemCollected(string itemId)
     {
-        Debug.Log("item collected");
+        Debug.Log($"item collected: {itemId}");
 
         itemsCollected++;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,9 +9,12 @@ public class DeleteConfirmation : MonoBehaviour
     public string id;
     public TMP_InputField count;
 
+    public Action onDelete;
+
     public void Delete()
     {
         PlayFabInventoryService.ConsumeItem(id, int.Parse(count.text));
+        onDelete?.Invoke();
         Hide();
     }
 

@@ -773,7 +773,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 23179650}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: SaveLoad
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &23179650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10261,7 +10273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00048828125}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.72998047, y: -1534.4928}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &328248684
@@ -24035,7 +24047,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 160.1}
+  m_AnchoredPosition: {x: 0, y: 160.09961}
   m_SizeDelta: {x: 210, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &798161619
@@ -24082,7 +24094,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1149429105}
+      - m_Target: {fileID: 1149429111}
         m_TargetAssemblyTypeName: InventoryUIManager, Assembly-CSharp
         m_MethodName: OpenCloseInventory
         m_Mode: 1
@@ -34021,7 +34033,6 @@ GameObject:
   - component: {fileID: 1149429100}
   - component: {fileID: 1149429102}
   - component: {fileID: 1149429104}
-  - component: {fileID: 1149429105}
   - component: {fileID: 1149429111}
   - component: {fileID: 1149429106}
   - component: {fileID: 1149429107}
@@ -34086,23 +34097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 206f8b316e60ac041ac042cccb35096c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1149429105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1149429099}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad7106458e0b81a4b96df629ec3c417d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 1766850456}
-  content: {fileID: 328248683}
-  inventoryUiUnitPrefab: {fileID: 5608198151927743466, guid: 8fbcb88ee2993104bb82e393d666941a,
-    type: 3}
-  deleteConfirmation: {fileID: 1060972157}
 --- !u!114 &1149429106
 MonoBehaviour:
   m_ObjectHideFlags: 0

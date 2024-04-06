@@ -27,13 +27,13 @@ public class Starter : MonoBehaviour
     {
         yield return new WaitUntil(() => AccountManager.isLoggedIn);
         yield return new WaitUntil(() => PlayfabStatisticsManager.loaded);
-        yield return new WaitUntil(() => PlayFabInventoryService.getInventoryReady);
 
         foreach (IPrepare service in servicesToPrepare)
         {
             bool isCompleted = false;
             bool success = false;
             string errorMsg = null;
+            Debug.Log($"Service initialization started {service}");
 
             yield return StartCoroutine(service.Prepare((result, error) =>
             {
@@ -47,10 +47,11 @@ public class Starter : MonoBehaviour
             if (!success)
             {
                 // Handle the error, e.g., log it or show a message
-                Debug.LogError($"Service initialization failed in {service.ToString()}:  {errorMsg}");
+                Debug.LogError($"Service initialization failed in {service}:  {errorMsg}");
                 // Optionally, stop the initialization process
                 yield break;
             }
+            Debug.Log($"Service initialization success {service}");
         }
 
         // All services are prepared, start the game

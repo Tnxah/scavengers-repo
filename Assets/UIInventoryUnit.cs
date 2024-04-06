@@ -11,28 +11,8 @@ public class UIInventoryUnit : MonoBehaviour
 
     public string id;
 
-    private void Awake()
-    {
-        PlayFabInventoryService.onGetInventoryCallback += DestroyCheck;
-    }
-
     public void Delete()
     {
-    //    if (int.Parse(count.text) == 1)
-    //    {
-    //        PlayFabInventoryService.ConsumeItem(id);
-    //        return;
-    //    }
-
-        InventoryUIManagerLegacy.instance.deleteConfirmation.Show(id);
-    }
-
-    private void DestroyCheck()
-    {
-        if (PlayFabInventoryService.items.Find(x => x.DisplayName.Equals(name.text)) == null)
-        {
-            PlayFabInventoryService.onGetInventoryCallback -= DestroyCheck;
-            Destroy(gameObject);
-        }
+        InventoryUIManager.instance.deleteConfirmation.Show(name.text);
     }
 }

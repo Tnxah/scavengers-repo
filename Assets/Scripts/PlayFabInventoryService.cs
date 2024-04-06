@@ -1,122 +1,132 @@
 using PlayFab;
-using PlayFab.ServerModels;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayFab.ClientModels;
+using System.Linq;
 
 public class PlayFabInventoryService
 {
-    public static event Action onGetItemCallback;
+    public static event Action<ItemInstance> onItemAmountChangedCallback;
 
-    public static event Action onGetInventoryCallback;
-
-    public static event Action onConsumeItemCallback;
-
-    public static bool getInventoryReady;
-
-    public static List<PlayFab.ClientModels.ItemInstance> items = new List<PlayFab.ClientModels.ItemInstance>();
-
-    public static void GetItem(List<string> items)
+    private static Dictionary<string, ItemInstance> items = Inventory.items;
+    public static void GrantItem(List<string> items)
     {
-        PlayFabServerAPI.GrantItemsToUser(new GrantItemsToUserRequest
+        PlayFabServerAPI.GrantItemsToUser(new PlayFab.ServerModels.GrantItemsToUserRequest
         {
             CatalogVersion = TitleInfo.CatalogVersion,
             PlayFabId = AccountManager.playerId,
             ItemIds = items
 
-        }, OnGetSuccess, OnGetError);
+        }, OnGrantSuccess, OnError);
     }
 
-
-    public static void GetItem(string item)
+    public static void GrantItem(string item, string catalogVersion)
     {
         var items = new List<string> { item };
 
-        PlayFabServerAPI.GrantItemsToUser(new GrantItemsToUserRequest
+        PlayFabServerAPI.GrantItemsToUser(new PlayFab.ServerModels.GrantItemsToUserRequest
         {
-            CatalogVersion = TitleInfo.CatalogVersion,
+            CatalogVersion = catalogVersion,
             PlayFabId = AccountManager.playerId,
             ItemIds = items
 
-        }, OnGetSuccess, OnGetError);
+        }, OnGrantSuccess, OnError);
     }
 
-
-    private static void OnGetError(PlayFabError error)
+    private static void OnGrantSuccess(PlayFab.ServerModels.GrantItemsToUserResult result)
     {
-        Debug.Log("GrantItemError: " + error.ErrorMessage);
+        ItemInstance itemInstance;
+
+        foreach (var grantedItem in result.ItemGrantResults)
+        {
+            if (items.ContainsKey(grantedItem.ItemId))
+            {
+                itemInstance = items[grantedItem.ItemId];
+
+                itemInstance.RemainingUses = grantedItem.RemainingUses;
+            
+                Debug.Log($"Item granted successfully. Local inventory updated. Item: {itemInstance.RemainingUses} in dictionary: {items[itemInstance.ItemId].RemainingUses}");
+            }
+            else
+            {
+                itemInstance = new ItemInstance
+                {
+                    ItemId = grantedItem.ItemId,
+                    ItemInstanceId = grantedItem.ItemInstanceId,
+                    RemainingUses = grantedItem.RemainingUses
+                };
+
+                items.Add(itemInstance.ItemId, itemInstance);
+            }
+
+            onItemAmountChangedCallback?.Invoke(itemInstance);
+        }
     }
-
-
-    private static void OnGetSuccess(GrantItemsToUserResult result)
-    {
-        onGetItemCallback?.Invoke();
-
-        GetUserInventory();
-        Debug.Log("GrantItemSuccess");
-    }
-
 
     public static void ConsumeItem(string itemId, int count = 1)
     {
-        PlayFab.ClientModels.ConsumeItemRequest request = new PlayFab.ClientModels.ConsumeItemRequest();
-        request.ItemInstanceId = itemId;
+        if (!items.ContainsKey(itemId) || items[itemId].RemainingUses < count) return;
+
+        ConsumeItemRequest request = new ConsumeItemRequest();
+        request.ItemInstanceId = items[itemId].ItemInstanceId;
         request.ConsumeCount = count;
 
-        PlayFabClientAPI.ConsumeItem(request, OnConsumeItemSuccess, OnConsumeItemError);
+        PlayFabClientAPI.ConsumeItem(request, OnConsumeItemSuccess, OnError);
     }
 
-
-    private static void OnConsumeItemSuccess(PlayFab.ClientModels.ConsumeItemResult result)
+    private static void OnConsumeItemSuccess(ConsumeItemResult result)
     {
-        Debug.Log("Consume Successful");
-        GetUserInventory();
+        var item = items.Values.ToList().FirstOrDefault(item => item.ItemInstanceId == result.ItemInstanceId);
+        if (item != null)
+        {
+            item.RemainingUses = result.RemainingUses;
+            if (item.RemainingUses <= 0)
+            {
+                items.Remove(item.ItemId);
+            }
+            //Debug.Log($"Item consumed successfully. Local inventory updated. item: {item.RemainingUses} in dictionary: {items[item.ItemId].RemainingUses}");
 
-        onConsumeItemCallback?.Invoke();
+            onItemAmountChangedCallback?.Invoke(item);
+        }
     }
 
-
-    private static void OnConsumeItemError(PlayFabError error)
+    public static void GetUserInventory(Action onComplete)
     {
-        Debug.Log("Consume unsuccessful: " + error.ErrorMessage);
+        PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(), result => 
+        {
+            foreach (var item in result.Inventory)
+            {
+                if (items.ContainsKey(item.ItemId))
+                {
+                    items[item.ItemId].RemainingUses = item.RemainingUses;
+                    continue;
+                }
+
+                items.Add(item.ItemId, item);
+
+                onComplete?.Invoke();
+            }
+        },
+        OnError);
     }
 
-
-    public static List<PlayFab.ClientModels.ItemInstance> GetUserInventory()
+    private static void OnGetUserInventorySuccess(GetUserInventoryResult result)
     {
-        List<PlayFab.ClientModels.ItemInstance> inventory = new List<PlayFab.ClientModels.ItemInstance>();
+        foreach (var item in result.Inventory)
+        {
+            if (items.ContainsKey(item.ItemId))
+            {
+                items[item.ItemId].RemainingUses = item.RemainingUses;
+                continue;
+            }
 
-        //PlayFabClientAPI.GetUserInventory(new PlayFab.ClientModels.GetUserInventoryRequest(), OnGetUserInventorySuccess, OnGetUserInventoryError);
-        PlayFabClientAPI.GetUserInventory(new PlayFab.ClientModels.GetUserInventoryRequest(), 
-            (result) => {
-                inventory = result.Inventory;
-                onGetInventoryCallback?.Invoke();
-                getInventoryReady = true;
-            }, 
-            (error) => { 
-                inventory = null;
-                Debug.Log("Get inventory unsuccessful: " + error.ErrorMessage);
-            });
-
-
-        return inventory;
+            items.Add(item.ItemId, item);
+        }
     }
 
-
-    private static void OnGetUserInventorySuccess(PlayFab.ClientModels.GetUserInventoryResult result)
+    private static void OnError(PlayFabError error)
     {
-        Debug.Log("Get inventory Successful");
-
-        items = result.Inventory;
-
-        onGetInventoryCallback?.Invoke();
-
-        getInventoryReady = true;
-    }
-
-
-    private static void OnGetUserInventoryError(PlayFabError error)
-    {
-        Debug.Log("Get inventory unsuccessful: " + error.ErrorMessage);
+        Debug.LogError("PlayFab Inventory error: " + error.ErrorMessage);
     }
 }

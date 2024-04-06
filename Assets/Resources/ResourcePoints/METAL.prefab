@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  neededToolId: 
-  minableResourceId: 
+  neededToolId: pickaxe
+  minableResourceId: metal
 --- !u!1 &3062047755357069537
 GameObject:
   m_ObjectHideFlags: 0

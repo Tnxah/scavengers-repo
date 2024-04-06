@@ -26,17 +26,17 @@ public class InventoryUIManagerLegacy : MonoBehaviour
 
     private void Start()
     {
-        PlayFabInventoryService.onGetInventoryCallback += LoadInventory;
+        //PlayFabInventoryService.onGetInventoryCallback += LoadInventory;
         LoadInventory();
     }
 
     public void LoadInventory()
     {
         print("LoadInv");
-        foreach (var item in PlayFabInventoryService.items)
-        {
-            AddToInventory(item);
-        }
+        //foreach (var item in PlayFabInventoryService.items.Values)
+        //{
+        //    AddToInventory(item);
+        //}
     }
 
     private void AddToInventory(ItemInstance itemInstance)

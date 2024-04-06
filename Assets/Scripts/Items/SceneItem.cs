@@ -31,7 +31,7 @@ public class SceneItem : MonoBehaviour, IInteractable, IHidable
 
     public virtual void Interact()
     {
-        PlayFabInventoryService.GetItem(itemId);
+        PlayFabInventoryService.GrantItem(itemId, TitleInfo.CollectibleCatalogVersion);
         Destroy(gameObject);
     }
 

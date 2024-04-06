@@ -8,8 +8,7 @@ public class InventoryUIManager : MonoBehaviour, IPrepare
 {
     public static InventoryUIManager instance;
 
-    private Dictionary<string, UIInventoryUnit> resources;
-    private Dictionary<string, UIInventoryUnit> tools;
+    private Dictionary<string, UIInventoryUnit> items = new Dictionary<string, UIInventoryUnit>();
 
     public GameObject inventoryPanel;
     [SerializeField]
@@ -25,55 +24,33 @@ public class InventoryUIManager : MonoBehaviour, IPrepare
         {
             instance = this;
         }
-        resources = new Dictionary<string, UIInventoryUnit>();
-        tools = new Dictionary<string, UIInventoryUnit>();
     }
 
-    public void LoadInventory()
+    private void RefreshItemUnit(ItemInstance itemInstance)
     {
-        print("LoadInv");
-        foreach (var item in PlayFabInventoryService.items)
+        if (itemInstance.RemainingUses == 0)
         {
-            AddToInventory(item);
+            Destroy(items[itemInstance.ItemId].gameObject);
+            items.Remove(itemInstance.ItemId);
+            return;
         }
-    }
 
-    private void AddToInventory(ItemInstance itemInstance)
-    {
-        Item item;
-
-        if ((item = ItemManager.TryGetCollectible(itemInstance.ItemId)) != null || (item = ItemManager.TryGetMinable(itemInstance.ItemId)) != null)
+        if (items.ContainsKey(itemInstance.ItemId))
         {
-            AddTo(resources, item, itemInstance);
-        }
-        else if ((item = ItemManager.TryGetCraftable(itemInstance.ItemId)) != null && item.type.Equals(ItemType.TOOL))
-        {
-            AddTo(tools, item, itemInstance);
-        }
-    }
-
-    private void AddTo(Dictionary<string, UIInventoryUnit> catalog, Item item, ItemInstance itemInstance)
-    {
-        if (catalog.ContainsKey(item.id))
-        {
-            catalog[item.id].count.text = itemInstance.RemainingUses.ToString();
+            items[itemInstance.ItemId].count.text = ((int)itemInstance.RemainingUses).ToString();
             return;
         }
 
         var newItem = Instantiate(inventoryUiUnitPrefab, content).GetComponent<UIInventoryUnit>();
+        Item item = ItemManager.TryGetCollectible(itemInstance.ItemId);
+        if (item == null) item = ItemManager.TryGetCraftable(itemInstance.ItemId);
+        if (item == null) item = ItemManager.TryGetMinable(itemInstance.ItemId);
 
         newItem.name.text = item.id.ToString();
         newItem.description.text = item.description;
-        newItem.id = itemInstance.ItemInstanceId;
-        newItem.count.text = itemInstance.RemainingUses.ToString();
-        //newItem.icon = item.icon;
+        newItem.count.text = ((int)itemInstance.RemainingUses).ToString();
 
-        catalog.Add(item.id, newItem);
-    }
-
-    public bool HasTool(string toolId)
-    {
-        return tools.ContainsKey(toolId);
+        items.Add(item.id, newItem);
     }
 
     public void OpenCloseInventory()
@@ -83,12 +60,23 @@ public class InventoryUIManager : MonoBehaviour, IPrepare
 
     public IEnumerator Prepare(Action<bool, string> onComplete)
     {
+        PlayFabInventoryService.onItemAmountChangedCallback += RefreshItemUnit;
 
-        PlayFabInventoryService.onGetInventoryCallback += LoadInventory;
-        LoadInventory();
+        var isComplete = false;
+        PlayFabInventoryService.GetUserInventory(() => { isComplete = true; });
+        yield return new WaitUntil(() => isComplete);
+
+        foreach (var item in Inventory.items)
+        {
+            RefreshItemUnit(item.Value);
+        }
 
         onComplete?.Invoke(true, null);
-
         yield break;
+    }
+
+    private void OnDisable()
+    {
+        PlayFabInventoryService.onItemAmountChangedCallback -= RefreshItemUnit;
     }
 }

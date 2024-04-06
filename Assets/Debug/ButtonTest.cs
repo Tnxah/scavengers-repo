@@ -9,10 +9,6 @@ public class ButtonTest : MonoBehaviour
     {
         InventoryUIManagerLegacy.instance.LoadInventory();
     }
-    public void AddItem()
-    {
-        PlayFabInventoryService.ConsumeItem("8B9DA07783057898", 2);
-    }
 
     public void SpawnMap()
     {
