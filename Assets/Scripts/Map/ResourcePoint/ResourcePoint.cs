@@ -14,6 +14,8 @@ public class ResourcePoint : MonoBehaviour, IInteractable
 
     protected Vector3 gameCoordinates;
 
+    protected int interactionsPerDay;
+
     public bool CanInteract()
     {
         return neededToolId.Equals("") ? true : Inventory.HasTool(neededToolId);

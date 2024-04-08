@@ -6,7 +6,7 @@ using UnityEngine;
 public class MapController : MonoBehaviour, IPrepare
 {
     private ResourcePointFactory resourcePointFactory;
-    private const int MapSeed = 15072001;
+    private const int MapSeed = 1204;
 
     public static MapController instance;
 
@@ -37,13 +37,14 @@ public class MapController : MonoBehaviour, IPrepare
     {
         while (true)
         {
-            yield return new WaitForSeconds(10);
             var cell = GridManager.GPSToGrid(GPSController.latitude, GPSController.longitude);
             if(!placedResources.Contains(cell))
                 if(resourcePointFactory.CreateResourcePoint(cell) != null)
                 {
                     placedResources.Add(cell);
                 }
+
+            yield return new WaitForSeconds(10);
         }
     }
 }

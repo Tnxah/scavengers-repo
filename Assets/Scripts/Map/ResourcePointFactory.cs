@@ -15,12 +15,17 @@ public class ResourcePointFactory
         LoadPrefabs();
     }
 
-    public string DetermineResourceType(int cellHash)
+    public string DetermineResourceType(Vector2Int cell)
     {
-        if (cellHash % 3 == 0) return "METAL";
-        if (cellHash % 3 == 1) return "COAL";
-        if (cellHash % 3 == 2) return "WATER";
-        return "RUINS";
+        float noiseValue = Mathf.PerlinNoise((cell.x) * 0.9f, (cell.y + globalSeed) * 0.9f);
+
+        int normalizedValue = (int)(noiseValue * 1000 % 100);
+
+        if (normalizedValue < 35) return "EMPTY"; // 0-34
+        else if (normalizedValue < 55) return "COAL"; // 35-54
+        else if (normalizedValue < 70) return "METAL"; // 55-69
+        else if (normalizedValue < 85) return "WATER"; // 70-84
+        else return "RUINS"; // 85-99
     }
 
     public int GenerateGridCellHash(Vector2Int cell)
@@ -39,9 +44,9 @@ public class ResourcePointFactory
 
     public ResourcePoint CreateResourcePoint(Vector2Int cell)
     {
-        int hash = GenerateGridCellHash(cell);
+        string resourceType = DetermineResourceType(cell);
 
-        string resourceType = DetermineResourceType(hash);
+        if (resourceType.Equals("EMPTY")) return null;
 
         if (resourcePointPrefabs.TryGetValue(resourceType, out GameObject prefab))
         {

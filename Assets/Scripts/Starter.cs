@@ -33,7 +33,6 @@ public class Starter : MonoBehaviour
             bool isCompleted = false;
             bool success = false;
             string errorMsg = null;
-            Debug.Log($"Service initialization started {service}");
 
             yield return StartCoroutine(service.Prepare((result, error) =>
             {
@@ -51,7 +50,6 @@ public class Starter : MonoBehaviour
                 // Optionally, stop the initialization process
                 yield break;
             }
-            Debug.Log($"Service initialization success {service}");
         }
 
         // All services are prepared, start the game
