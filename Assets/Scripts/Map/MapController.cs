@@ -6,7 +6,7 @@ using UnityEngine;
 public class MapController : MonoBehaviour, IPrepare
 {
     private ResourcePointFactory resourcePointFactory;
-    private const int MapSeed = 1204;
+    private int MapSeed;
 
     public static MapController instance;
 
@@ -22,6 +22,8 @@ public class MapController : MonoBehaviour, IPrepare
 
     public IEnumerator Prepare(Action<bool, string> onComplete)
     {
+        MapSeed = TitleInfo.MapSeed;
+
         yield return new WaitUntil(() => GPSController.isLocationServiceEnabled);
 
         resourcePointFactory = new ResourcePointFactory(MapSeed);
