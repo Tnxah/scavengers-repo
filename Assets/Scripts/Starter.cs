@@ -11,11 +11,13 @@ public class Starter : MonoBehaviour
     {
         // Add services to the list
         servicesToPrepare.Add(new JobManager());
+        servicesToPrepare.Add(new PlayFabTimeService());
         servicesToPrepare.Add(ItemManager.instance);
         servicesToPrepare.Add(InventoryUIManager.instance);
         servicesToPrepare.Add(new GeoLocationManager());
         servicesToPrepare.Add(SpawnController.instance);
         servicesToPrepare.Add(GPSController.instance);
+        servicesToPrepare.Add(new PlayfabUserDataService());
         servicesToPrepare.Add(MapController.instance);
         servicesToPrepare.Add(LocationPointController.instance);
 
@@ -42,7 +44,7 @@ public class Starter : MonoBehaviour
             }));
 
             yield return new WaitUntil(() => isCompleted);
-
+            //Debug.Log($"{service}: {errorMsg}");
             if (!success)
             {
                 // Handle the error, e.g., log it or show a message

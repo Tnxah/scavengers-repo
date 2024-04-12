@@ -21,11 +21,11 @@ public class ResourcePointFactory
 
         int normalizedValue = (int)(noiseValue * 1000 % 100);
 
-        if (normalizedValue < 35) return "EMPTY"; // 0-34
-        else if (normalizedValue < 55) return "COAL"; // 35-54
-        else if (normalizedValue < 70) return "METAL"; // 55-69
-        else if (normalizedValue < 85) return "WATER"; // 70-84
-        else return "RUINS"; // 85-99
+        if (normalizedValue < 30) return "EMPTY"; // 0-29
+        else if (normalizedValue < 55) return "COAL"; // 30-54
+        else if (normalizedValue < 75) return "METAL"; // 55-74
+        else if (normalizedValue < 90) return "WATER"; // 75-89
+        else return "RUINS"; // 90-99
     }
 
     public int GenerateGridCellHash(Vector2Int cell)
@@ -40,6 +40,21 @@ public class ResourcePointFactory
         {
             resourcePointPrefabs.Add(prefab.name, prefab);
         }
+    }
+
+    public void DebugResourceList(Vector2Int cell, int halfSize)
+    {
+        string ResourceList = "";
+
+        for (int y = cell.y - halfSize; y < cell.y + halfSize; y++)
+        {
+            for (int x = cell.x - halfSize; x < cell.x + halfSize; x++)
+            {
+                ResourceList += DetermineResourceType(new Vector2Int(x, y))+ $":{x},{y} ";
+            }
+            ResourceList += "\n";
+        }
+        Debug.Log(ResourceList);
     }
 
     public ResourcePoint CreateResourcePoint(Vector2Int cell)

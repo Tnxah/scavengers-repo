@@ -38,12 +38,16 @@ public class MapController : MonoBehaviour, IPrepare
         while (true)
         {
             var cell = GridManager.GPSToGrid(GPSController.latitude, GPSController.longitude);
-            if(!placedResources.Contains(cell))
-                if(resourcePointFactory.CreateResourcePoint(cell) != null)
+            
+            if (!placedResources.Contains(cell))
+            {
+                //Debug.Log($"{cell.x},{cell.y}");
+                //resourcePointFactory.DebugResourceList(cell, 15);
+                if (resourcePointFactory.CreateResourcePoint(cell) != null)
                 {
                     placedResources.Add(cell);
                 }
-
+            }
             yield return new WaitForSeconds(10);
         }
     }

@@ -176,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6695568671451398811}
   - component: {fileID: 2488910337440902751}
-  - component: {fileID: 6601071243774016032}
+  - component: {fileID: 3072435082265238369}
   m_Layer: 0
   m_Name: RUINS
   m_TagString: Untagged
@@ -226,7 +226,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6601071243774016032
+--- !u!114 &3072435082265238369
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,12 +235,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3030354378651382343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f281aff6a3c5c14c9597e0da01acfae, type: 3}
+  m_Script: {fileID: 11500000, guid: 562a5724b600dec4f82c4db80c72ab84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
   neededToolId: 
   minableResourceId: 
+  interactionsPerDay: 0
 --- !u!1 &5052107671661221617
 GameObject:
   m_ObjectHideFlags: 0
