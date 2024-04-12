@@ -7,7 +7,7 @@ public class BlueprintService
     {
         if(blueprintName == null)
         {
-            blueprintName = Blueprint.GetRandomBlueprint();
+            blueprintName = GetRandomBlueprint();
         }
 
         var amountOfBlueprints = GetAmountOfBlueprints(blueprintName);
@@ -18,23 +18,9 @@ public class BlueprintService
     {
         return PlayfabUserDataService.UserData.ContainsKey(blueprintName) ? int.Parse(PlayfabUserDataService.UserData[blueprintName]) : 0;
     }
-}
 
-public class Blueprint
-{
-    public const string Pickaxe = "Pickaxe_blueprints";
-    public const string Workbrench = "Workbrench_blueprints";
-
-    public static string GetRandomBlueprint()
+    private static string GetRandomBlueprint()
     {
-        // Using reflection to get all public static fields of the Blueprint class
-        FieldInfo[] fields = typeof(Blueprint).GetFields(BindingFlags.Public | BindingFlags.Static);
-
-        // Create a random number generator
-        Random random = new Random();
-
-        // Pick a random field and return its value
-        FieldInfo randomField = fields[random.Next(fields.Length)];
-        return (string)randomField.GetValue(null);
+        return ItemManager.GetRandomCraftableKey();
     }
 }

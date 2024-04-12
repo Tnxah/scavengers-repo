@@ -11,4 +11,11 @@ public static class Inventory
 
         return tool && ItemManager.TryGetCraftable(toolId).type.Equals(ItemType.TOOL);
     }
+    public static bool HasItem(string itemId, int amount = 0)
+    {
+        var item = items.ContainsKey(itemId);
+        if (amount > 0) item = item && items[itemId].RemainingUses >= amount;
+
+        return item;
+    }
 }

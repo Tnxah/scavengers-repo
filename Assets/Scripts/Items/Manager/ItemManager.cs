@@ -135,6 +135,15 @@ public class ItemManager : MonoBehaviour, IPrepare
         var rand = new System.Random();
         return collectible.ElementAt(rand.Next(0, collectible.Count)).Key;
     }
+    public static string GetRandomCraftableKey()
+    {
+        var rand = new System.Random();
+        return craftable.ElementAt(rand.Next(0, craftable.Count)).Key;
+    }
+    public static List<string> GetCraftableKeys()
+    {
+        return craftable.Keys.ToList<string>();
+    }
     public static ItemType GetType(string itemId)
     {
         if (TryGetCollectible(itemId) != null || TryGetMinable(itemId) != null)

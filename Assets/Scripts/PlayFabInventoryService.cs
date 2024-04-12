@@ -105,8 +105,8 @@ public class PlayFabInventoryService
 
                 items.Add(item.ItemId, item);
 
-                onComplete?.Invoke();
             }
+                onComplete?.Invoke();
         },
         OnError);
     }

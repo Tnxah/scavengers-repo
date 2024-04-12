@@ -14,7 +14,6 @@ public class PlayfabUserDataService : IPrepare
     public static void SetUserData(string key, string value)
     {
         UserData[key] = value;
-
         PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
         {
             Data = UserData

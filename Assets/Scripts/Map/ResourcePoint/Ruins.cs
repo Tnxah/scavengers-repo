@@ -13,7 +13,7 @@ public class Ruins : ResourcePoint
     {
         if (PlayfabUserDataService.UserData.ContainsKey(resourcePointId))
         {
-            //Open Workbrench
+            WorkbenchUIManager.instance.OpenCloseInventory();
         }
         else
         {
