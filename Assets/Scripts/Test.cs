@@ -8,7 +8,9 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AccountManager.Login("tnxah.j@gmail.com", "123123123");
+#if UNITYY_EDITOR
+        AccountManager.Login("tnxah.j@gmail.com", "123123123", (isComplete, message) => { });
+#endif
     }
 
     // Update is called once per frame
