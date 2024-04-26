@@ -21,11 +21,11 @@ public class ResourcePointFactory
 
         int normalizedValue = (int)(noiseValue * 1000 % 100);
 
-        if (normalizedValue < 30) return "EMPTY"; // 0-29
-        else if (normalizedValue < 55) return "COAL"; // 30-54
-        else if (normalizedValue < 75) return "METAL"; // 55-74
-        else if (normalizedValue < 90) return "WATER"; // 75-89
-        else return "RUINS"; // 90-99
+        if (normalizedValue < 50) return "EMPTY"; // 0-49
+        else if (normalizedValue < 70) return "COAL"; // 50-69
+        else if (normalizedValue < 85) return "METAL"; // 70-84
+        else if (normalizedValue < 95) return "WATER"; // 85-94
+        else return "RUINS"; // 95-99
     }
 
     public int GenerateGridCellHash(Vector2Int cell)

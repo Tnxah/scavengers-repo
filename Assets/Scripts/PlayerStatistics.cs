@@ -14,7 +14,7 @@ public class PlayerStatistics
     public static readonly int baseDetectionRadius = 100;
     public static float currentDetectionRadius = baseDetectionRadius;
 
-    public static readonly int baseSpawnDelay = 20;
+    public static readonly int baseSpawnDelay = 10;
     public static float currentSpawnDelay = baseSpawnDelay;
 
     // job
@@ -22,7 +22,7 @@ public class PlayerStatistics
 
 
     //Spawn
-    public static readonly int spawnRadius = 500;
+    public static readonly int spawnRadius = 300;
 
 
     //Interaction

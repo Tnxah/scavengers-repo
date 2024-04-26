@@ -6,7 +6,7 @@ public class TerrainGenerator : MonoBehaviour
 {
     private int width = 256;  // Width of the terrain chunk
     private int depth = 256;  // Depth of the terrain chunk
-    private float height = 3;  // Maximum elevation of the terrain
+    private float height = 1.5f;  // Maximum elevation of the terrain
 
     private float scale = 20;
 
@@ -31,6 +31,7 @@ public class TerrainGenerator : MonoBehaviour
         terrainData.heightmapResolution = width + 1;
         terrainData.size = new Vector3(width, height, depth);
         terrainData.SetHeights(0, 0, GenerateHeights());
+        terrainData.terrainLayers[0].tileOffset = new Vector2(transform.position.x, transform.position.z);
     }
 
     float[,] GenerateHeights()

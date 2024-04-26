@@ -36,9 +36,10 @@ public class WorkbenchUIManager : MonoBehaviour
         newItem.name.text = item.id.ToString();
         foreach (var material in item.materials)
         {
-            newItem.materials.text += material.Key + ": " + material.Value;
+            newItem.materials.text += material.Key + ": " + material.Value + " ";
         }
 
+        newItem.materials.text += "blueprints: " + item.BlueprintsAmountToCraft;
         items.Add(item.id, newItem);
         items[item.id].SetInteractable(item.IsCraftable);
     }

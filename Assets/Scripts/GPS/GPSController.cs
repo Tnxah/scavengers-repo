@@ -84,7 +84,7 @@ public class GPSController : MonoBehaviour, IPrepare
         yield return new WaitUntil(() => isPermissionGranted);
 
         // Start service before querying location
-        Input.location.Start(1f, 0.5f);
+        Input.location.Start(1f, 1f);
 
         // Wait until service initializes
         int maxWait = 20;

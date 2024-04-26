@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GridManager
 {
-    private const float cellSize = .8f;
+    private const float cellSize = .3f;
     private const float KmPerDegreeLatitude = 111.32f;
 
     private static float latitudeOffset;
