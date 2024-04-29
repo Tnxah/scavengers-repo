@@ -8,8 +8,8 @@ public class GridManager
     private static float latitudeOffset;
     private static float longitudeOffset;
 
-    private static int seed;
-    public static int Seed
+    private static float seed;
+    public static float Seed
     {
         private get { return seed; }
         set
@@ -47,9 +47,9 @@ public class GridManager
         return (centerLatitude, centerLongitude);
     }
 
-    private static float GenerateOffset(int seed, int type)
+    private static float GenerateOffset(float seed, int type)
     {
-        System.Random rand = new System.Random(seed + type);
+        System.Random rand = new System.Random((int)seed + type);
         return (float)(rand.NextDouble() - 0.5) * (type == 0 ? 0.01f : 0.01f);
     }
 }

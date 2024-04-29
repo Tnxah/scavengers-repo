@@ -9,5 +9,5 @@ public static class TitleInfo
     public const string MinableCatalogVersion = "minable";
     public const string Currency = "CG";
 
-    public const int MapSeed = 1204;
+    public const float MapSeed = 1204;
 }

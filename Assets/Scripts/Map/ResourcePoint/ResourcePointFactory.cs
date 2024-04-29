@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class ResourcePointFactory
 {
-    private int globalSeed;
+    private float globalSeed;
     private Dictionary<string, GameObject> resourcePointPrefabs;
+    private const float scale = 0.05f;
 
-    public ResourcePointFactory(int globalSeed)
+    public ResourcePointFactory(float globalSeed)
     {
         this.globalSeed = globalSeed;
         resourcePointPrefabs = new Dictionary<string, GameObject>();
@@ -17,20 +18,14 @@ public class ResourcePointFactory
 
     public string DetermineResourceType(Vector2Int cell)
     {
-        float noiseValue = Mathf.PerlinNoise((cell.x) * 0.9f, (cell.y + globalSeed) * 0.9f);
-
-        int normalizedValue = (int)(noiseValue * 1000 % 100);
+        float noiseValue = Mathf.PerlinNoise(((float)cell.x + globalSeed) * scale, ((float)cell.y + globalSeed) * scale);
+        float normalizedValue = (noiseValue * 1000) % 100;
 
         if (normalizedValue < 50) return "EMPTY"; // 0-49
-        else if (normalizedValue < 70) return "COAL"; // 50-69
-        else if (normalizedValue < 85) return "METAL"; // 70-84
-        else if (normalizedValue < 95) return "WATER"; // 85-94
-        else return "RUINS"; // 95-99
-    }
-
-    public int GenerateGridCellHash(Vector2Int cell)
-    {
-        return cell.x.GetHashCode() ^ cell.y.GetHashCode() ^ globalSeed;
+        else if (normalizedValue < 72) return "COAL"; // 50-71
+        else if (normalizedValue < 87) return "METAL"; // 72-86
+        else if (normalizedValue < 97) return "WATER"; // 87-96
+        else return "RUINS"; // 97-99
     }
 
     private void LoadPrefabs()

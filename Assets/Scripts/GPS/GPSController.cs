@@ -85,6 +85,7 @@ public class GPSController : MonoBehaviour, IPrepare
 
         // Start service before querying location
         Input.location.Start(1f, 1f);
+        Input.compass.enabled = true; // Enable the compass
 
         // Wait until service initializes
         int maxWait = 20;
