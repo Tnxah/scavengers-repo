@@ -1,5 +1,7 @@
 public enum ItemType
 {
     RESOURCE,
-    TOOL
+    TOOL,
+    BUILDING,
+    MECHANISM
 }

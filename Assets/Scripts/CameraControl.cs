@@ -5,16 +5,15 @@ public class CameraControl : MonoBehaviour
     private Touch touch;
     private float sensitivity = 4f;
     private float abovePlayerHeight = 10f;
+    private float distanceToPlayer = 35.5f;
 
     public Transform playerBody;
 
-    private float maxCamHeight = 50f;
-    private float minCamHeight = 7f;
+    private float maxCamHeight = 80f;
+    private float minCamHeight = 8f;
     private bool doubleTap;
 
-    private float lastCompassHeading = 0f;
-
-    private bool compass = true;
+    private bool compass = false;
     public void ActivateCompass() => compass = true;
 
     private void FixedUpdate()
@@ -25,11 +24,13 @@ public class CameraControl : MonoBehaviour
         if (compass)
         {
             float currentHeading = Input.compass.trueHeading;
-            float headingDifference = currentHeading - lastCompassHeading;
-            if (Mathf.Abs(headingDifference) > 0.3) // Avoid minor rotations
+            var normalDifference = currentHeading - transform.eulerAngles.y;
+            float throughZeroDifference = currentHeading > 180 ? -(360 - currentHeading + transform.eulerAngles.y) : currentHeading + 360 - transform.eulerAngles.y;
+            float headingDifference = Mathf.Abs(normalDifference) > 180 ? throughZeroDifference : normalDifference;
+
+            if (Mathf.Abs(headingDifference) > 4.5f) // Avoid minor rotations
             {
-                transform.RotateAround(playerBody.position, Vector3.up, headingDifference);
-                lastCompassHeading = currentHeading;
+                transform.RotateAround(playerBody.position, Vector3.up, headingDifference * Time.fixedDeltaTime * 10f);
             }
         }
 

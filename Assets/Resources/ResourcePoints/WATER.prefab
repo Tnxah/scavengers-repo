@@ -150,8 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f281aff6a3c5c14c9597e0da01acfae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcePointId: 
   type: 2
-  neededToolId: 
-  minableResourceId: 
-  interactionsPerDay: 5
+  neededToolId: can
+  minableResourceId: water
+  interactionsPerDay: 1
